@@ -13,6 +13,7 @@
 		D880F24A29BF8A75007DE2F6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D880F24829BF8A75007DE2F6 /* Main.storyboard */; };
 		D880F24C29BF8A87007DE2F6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D880F24B29BF8A87007DE2F6 /* Assets.xcassets */; };
 		D880F24F29BF8A87007DE2F6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D880F24D29BF8A87007DE2F6 /* LaunchScreen.storyboard */; };
+		D880F25B29BF8BE7007DE2F6 /* City.swift in Sources */ = {isa = PBXBuildFile; fileRef = D880F25A29BF8BE7007DE2F6 /* City.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		D880F24B29BF8A87007DE2F6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D880F24E29BF8A87007DE2F6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D880F25029BF8A87007DE2F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D880F25A29BF8BE7007DE2F6 /* City.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = City.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,15 +58,48 @@
 		D880F24129BF8A74007DE2F6 /* GoGeo */ = {
 			isa = PBXGroup;
 			children = (
-				D880F24229BF8A75007DE2F6 /* AppDelegate.swift */,
-				D880F24429BF8A75007DE2F6 /* SceneDelegate.swift */,
-				D880F24629BF8A75007DE2F6 /* ViewController.swift */,
-				D880F24829BF8A75007DE2F6 /* Main.storyboard */,
+				D880F25929BF8B34007DE2F6 /* Models */,
+				D880F25629BF8AEE007DE2F6 /* App */,
+				D880F25829BF8B16007DE2F6 /* Controllers */,
+				D880F25729BF8AFC007DE2F6 /* Storyboards */,
 				D880F24B29BF8A87007DE2F6 /* Assets.xcassets */,
-				D880F24D29BF8A87007DE2F6 /* LaunchScreen.storyboard */,
-				D880F25029BF8A87007DE2F6 /* Info.plist */,
 			);
 			path = GoGeo;
+			sourceTree = "<group>";
+		};
+		D880F25629BF8AEE007DE2F6 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				D880F24229BF8A75007DE2F6 /* AppDelegate.swift */,
+				D880F24429BF8A75007DE2F6 /* SceneDelegate.swift */,
+				D880F25029BF8A87007DE2F6 /* Info.plist */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		D880F25729BF8AFC007DE2F6 /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				D880F24829BF8A75007DE2F6 /* Main.storyboard */,
+				D880F24D29BF8A87007DE2F6 /* LaunchScreen.storyboard */,
+			);
+			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		D880F25829BF8B16007DE2F6 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				D880F24629BF8A75007DE2F6 /* ViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		D880F25929BF8B34007DE2F6 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				D880F25A29BF8BE7007DE2F6 /* City.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -140,6 +175,7 @@
 			files = (
 				D880F24729BF8A75007DE2F6 /* ViewController.swift in Sources */,
 				D880F24329BF8A75007DE2F6 /* AppDelegate.swift in Sources */,
+				D880F25B29BF8BE7007DE2F6 /* City.swift in Sources */,
 				D880F24529BF8A75007DE2F6 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -289,7 +325,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 488U3567BQ;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = GoGeo/Info.plist;
+				INFOPLIST_FILE = GoGeo/App/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -302,9 +338,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ComSys.GoGeo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -317,7 +356,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 488U3567BQ;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = GoGeo/Info.plist;
+				INFOPLIST_FILE = GoGeo/App/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -330,9 +369,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ComSys.GoGeo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
