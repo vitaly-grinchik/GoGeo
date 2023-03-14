@@ -22,7 +22,6 @@ class NetworkManager {
         "X-RapidAPI-Host": "wft-geo-db.p.rapidapi.com"
     ]
     
-    
     private init() {}
     
     func fetchCities() {
@@ -37,7 +36,7 @@ class NetworkManager {
         request.httpMethod = "GET"
         request.allHTTPHeaderFields = headers
             
-        URLSession.shared.dataTask(with: request) { data, _, error in
+        URLSession.shared.dataTask(with: request) { [weak self] data, _, error in
             guard let data = data else {
                 print(error?.localizedDescription ?? "No error description")
                 return
@@ -46,11 +45,25 @@ class NetworkManager {
             let decoder = JSONDecoder()
             do {
                 let cities = try decoder.decode(City.self, from: data)
-                cities.data.forEach { print($0) }
+                self?.printInfoOnCities(cities.data)
                 
             } catch let error {
                 print(error.localizedDescription)
             }
         }.resume()
+    }
+    
+    private func printInfoOnCities(_ cities: [CityDetails]) {
+        cities.forEach { city in
+            
+            let description = """
+            Country:    \(city.country) (code: \(city.countryCode))
+            City:       \(city.name)
+            GPS:        \(city.latitude):\(city.latitude)
+            ---------------------------------------------------------
+            
+            """
+            print(description)
+        }
     }
 }
