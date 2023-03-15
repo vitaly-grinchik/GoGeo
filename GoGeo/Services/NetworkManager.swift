@@ -15,8 +15,8 @@ enum List: String {
 enum NetError: Error {
     case invalidUrl
     case invalidData
-    case fileNotFound
-    case imageNotFound
+    case decodeError
+    case noImageData
 }
 
 class NetworkManager {
@@ -32,14 +32,14 @@ class NetworkManager {
     private init() {}
     
     func fetchImage(from url: String?, completion: @escaping (Result<Data, NetError>) -> Void) {
-        guard let url = URL(string: List.citiesUrl.rawValue) else {
+        guard let url = URL(string: url ?? "") else {
             completion(.failure(.invalidUrl))
             return
         }
         
         DispatchQueue.global().async {
             guard let imageData = try? Data(contentsOf: url) else {
-                completion(.failure(.imageNotFound))
+                completion(.failure(.noImageData))
                 return
             }
             
@@ -47,6 +47,45 @@ class NetworkManager {
                 completion(.success(imageData))
             }
         }
+    }
+    
+    func fetch<T: Decodable>(_ type: T.Type, from url: String?, completion: @escaping (Result<T, NetError>) -> Void) {
+        
+        // Instantiate URL
+        guard let url = URL(string: url ?? "") else {
+            completion(.failure(.invalidUrl))
+            return
+        }
+        
+        // Instantiate request
+        var request = URLRequest(
+            url: url,
+            cachePolicy: .useProtocolCachePolicy,
+            timeoutInterval: 10.0
+        )
+        request.httpMethod = "GET"
+        request.allHTTPHeaderFields = headers
+            
+        // Instantiate session
+        URLSession.shared.dataTask(with: request) { data, _, error in
+            guard let data = data else {
+                completion(.failure(.invalidData))
+                print(error?.localizedDescription ?? "No error description")
+                return
+            }
+            
+            // Parsing
+            let decoder = JSONDecoder()
+            do {
+                let type = try decoder.decode(T.self, from: data)
+                completion(.success(type))
+                
+            } catch let error {
+                completion(.failure(.decodeError))
+                print(error.localizedDescription)
+            }
+        }.resume()
+        
     }
     
     func fetchCities() {
