@@ -12,6 +12,13 @@ enum List: String {
     case countriesUrl = "https://wft-geo-db.p.rapidapi.com/v1/geo/countries"
 }
 
+enum NetError: Error {
+    case invalidUrl
+    case invalidData
+    case fileNotFound
+    case imageNotFound
+}
+
 class NetworkManager {
     
     static let shared = NetworkManager()
@@ -24,19 +31,23 @@ class NetworkManager {
     
     private init() {}
     
-    func fetchImage(from url: String?, completion: @escaping (Data) -> Void) {
-        guard let url = URL(string: List.citiesUrl.rawValue) else { return }
+    func fetchImage(from url: String?, completion: @escaping (Result<Data, NetError>) -> Void) {
+        guard let url = URL(string: List.citiesUrl.rawValue) else {
+            completion(.failure(.invalidUrl))
+            return
+        }
         
         DispatchQueue.global().async {
-            guard let imageData = try? Data(contentsOf: url) else { return }
+            guard let imageData = try? Data(contentsOf: url) else {
+                completion(.failure(.imageNotFound))
+                return
+            }
             
             DispatchQueue.main.async {
-                completion(imageData)
+                completion(.success(imageData))
             }
         }
     }
-    
-    
     
     func fetchCities() {
         
