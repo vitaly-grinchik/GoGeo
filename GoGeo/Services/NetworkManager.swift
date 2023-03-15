@@ -24,6 +24,20 @@ class NetworkManager {
     
     private init() {}
     
+    func fetchImage(from url: String?, completion: @escaping (Data) -> Void) {
+        guard let url = URL(string: List.citiesUrl.rawValue) else { return }
+        
+        DispatchQueue.global().async {
+            guard let imageData = try? Data(contentsOf: url) else { return }
+            
+            DispatchQueue.main.async {
+                completion(imageData)
+            }
+        }
+    }
+    
+    
+    
     func fetchCities() {
         
         guard let url = URL(string: List.citiesUrl.rawValue) else { return }

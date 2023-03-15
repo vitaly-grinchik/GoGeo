@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		D880F24329BF8A75007DE2F6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D880F24229BF8A75007DE2F6 /* AppDelegate.swift */; };
 		D880F24529BF8A75007DE2F6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D880F24429BF8A75007DE2F6 /* SceneDelegate.swift */; };
-		D880F24729BF8A75007DE2F6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D880F24629BF8A75007DE2F6 /* ViewController.swift */; };
+		D880F24729BF8A75007DE2F6 /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D880F24629BF8A75007DE2F6 /* StartViewController.swift */; };
 		D880F24A29BF8A75007DE2F6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D880F24829BF8A75007DE2F6 /* Main.storyboard */; };
 		D880F24C29BF8A87007DE2F6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D880F24B29BF8A87007DE2F6 /* Assets.xcassets */; };
 		D880F24F29BF8A87007DE2F6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D880F24D29BF8A87007DE2F6 /* LaunchScreen.storyboard */; };
@@ -24,7 +24,7 @@
 		D880F23F29BF8A74007DE2F6 /* GoGeo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GoGeo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D880F24229BF8A75007DE2F6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D880F24429BF8A75007DE2F6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		D880F24629BF8A75007DE2F6 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		D880F24629BF8A75007DE2F6 /* StartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartViewController.swift; sourceTree = "<group>"; };
 		D880F24929BF8A75007DE2F6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D880F24B29BF8A87007DE2F6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D880F24E29BF8A87007DE2F6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -66,6 +66,7 @@
 		D880F24129BF8A74007DE2F6 /* GoGeo */ = {
 			isa = PBXGroup;
 			children = (
+				D880F26729C1E022007DE2F6 /* Services */,
 				D880F25929BF8B34007DE2F6 /* Models */,
 				D880F25629BF8AEE007DE2F6 /* App */,
 				D880F25829BF8B16007DE2F6 /* Controllers */,
@@ -80,7 +81,6 @@
 			children = (
 				D880F24229BF8A75007DE2F6 /* AppDelegate.swift */,
 				D880F24429BF8A75007DE2F6 /* SceneDelegate.swift */,
-				D880F26529C0B5CE007DE2F6 /* NetworkManager.swift */,
 				D880F25029BF8A87007DE2F6 /* Info.plist */,
 			);
 			path = App;
@@ -98,7 +98,7 @@
 		D880F25829BF8B16007DE2F6 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				D880F24629BF8A75007DE2F6 /* ViewController.swift */,
+				D880F24629BF8A75007DE2F6 /* StartViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -112,6 +112,14 @@
 				D880F26129C0AF29007DE2F6 /* Metadata.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		D880F26729C1E022007DE2F6 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				D880F26529C0B5CE007DE2F6 /* NetworkManager.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -186,7 +194,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D880F26429C0AF6B007DE2F6 /* Country.swift in Sources */,
-				D880F24729BF8A75007DE2F6 /* ViewController.swift in Sources */,
+				D880F24729BF8A75007DE2F6 /* StartViewController.swift in Sources */,
 				D880F24329BF8A75007DE2F6 /* AppDelegate.swift in Sources */,
 				D880F25B29BF8BE7007DE2F6 /* City.swift in Sources */,
 				D880F26629C0B5CE007DE2F6 /* NetworkManager.swift in Sources */,
