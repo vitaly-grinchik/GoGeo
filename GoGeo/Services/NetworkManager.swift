@@ -78,56 +78,14 @@ class NetworkManager {
             let decoder = JSONDecoder()
             do {
                 let type = try decoder.decode(T.self, from: data)
-                completion(.success(type))
+                DispatchQueue.main.async {
+                    completion(.success(type))
+                }
                 
             } catch let error {
                 completion(.failure(.decodeError))
                 print(error.localizedDescription)
             }
         }.resume()
-        
-    }
-    
-    func fetchCities() {
-        
-        guard let url = URL(string: List.citiesUrl.rawValue) else { return }
-        
-        var request = URLRequest(
-            url: url,
-            cachePolicy: .useProtocolCachePolicy,
-            timeoutInterval: 10.0
-        )
-        request.httpMethod = "GET"
-        request.allHTTPHeaderFields = headers
-            
-        URLSession.shared.dataTask(with: request) { [weak self] data, _, error in
-            guard let data = data else {
-                print(error?.localizedDescription ?? "No error description")
-                return
-            }
-            
-            let decoder = JSONDecoder()
-            do {
-                let cities = try decoder.decode(City.self, from: data)
-                self?.printInfoOnCities(cities.data)
-                
-            } catch let error {
-                print(error.localizedDescription)
-            }
-        }.resume()
-    }
-    
-    private func printInfoOnCities(_ cities: [CityDetails]) {
-        cities.forEach { city in
-            
-            let description = """
-            Country:    \(city.country) (code: \(city.countryCode))
-            City:       \(city.name)
-            GPS:        \(city.latitude):\(city.latitude)
-            ---------------------------------------------------------
-            
-            """
-            print(description)
-        }
     }
 }
