@@ -35,7 +35,6 @@ class StartViewController: UIViewController {
                 City:       \(city.name)
                 GPS:        \(city.latitude):\(city.latitude)
                 ---------------------------------------------------------
-                
                 """
             print(description)
         }

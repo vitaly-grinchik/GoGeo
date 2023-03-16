@@ -63,7 +63,6 @@ class NetworkManager {
             cachePolicy: .useProtocolCachePolicy,
             timeoutInterval: 10.0
         )
-        request.httpMethod = "GET"
         request.allHTTPHeaderFields = headers
             
         // Instantiate session
