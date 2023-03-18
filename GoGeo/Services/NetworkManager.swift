@@ -19,6 +19,13 @@ enum NetError: Error {
     case noImageData
 }
 
+enum LinkRef: String {
+    case first
+    case prev
+    case next
+    case last
+}
+
 class NetworkManager {
     
     static let shared = NetworkManager()
@@ -86,5 +93,9 @@ class NetworkManager {
                 print(error.localizedDescription)
             }
         }.resume()
+        
+        // KKOZKIGBCCUK
+        // TBWOCCIXOWQG - Таня
+//        23/03 13:30
     }
 }

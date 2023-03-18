@@ -16,7 +16,7 @@ class StartViewController: UIViewController {
     }
     
     private func fetchCities() {
-        NetworkManager.shared.fetch(City.self, from: List.citiesUrl.rawValue)
+        NetworkManager.shared.fetch(CitiesResponse.self, from: List.citiesUrl.rawValue)
         { [weak self] result in
             switch result {
             case .success(let ciites):

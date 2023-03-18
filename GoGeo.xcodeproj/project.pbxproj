@@ -13,7 +13,7 @@
 		D880F24A29BF8A75007DE2F6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D880F24829BF8A75007DE2F6 /* Main.storyboard */; };
 		D880F24C29BF8A87007DE2F6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D880F24B29BF8A87007DE2F6 /* Assets.xcassets */; };
 		D880F24F29BF8A87007DE2F6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D880F24D29BF8A87007DE2F6 /* LaunchScreen.storyboard */; };
-		D880F25B29BF8BE7007DE2F6 /* City.swift in Sources */ = {isa = PBXBuildFile; fileRef = D880F25A29BF8BE7007DE2F6 /* City.swift */; };
+		D880F25B29BF8BE7007DE2F6 /* Citiy.swift in Sources */ = {isa = PBXBuildFile; fileRef = D880F25A29BF8BE7007DE2F6 /* Citiy.swift */; };
 		D880F26029C0AF04007DE2F6 /* Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = D880F25F29C0AF04007DE2F6 /* Link.swift */; };
 		D880F26229C0AF29007DE2F6 /* Metadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = D880F26129C0AF29007DE2F6 /* Metadata.swift */; };
 		D880F26429C0AF6B007DE2F6 /* Country.swift in Sources */ = {isa = PBXBuildFile; fileRef = D880F26329C0AF6B007DE2F6 /* Country.swift */; };
@@ -29,7 +29,7 @@
 		D880F24B29BF8A87007DE2F6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D880F24E29BF8A87007DE2F6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D880F25029BF8A87007DE2F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D880F25A29BF8BE7007DE2F6 /* City.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = City.swift; sourceTree = "<group>"; };
+		D880F25A29BF8BE7007DE2F6 /* Citiy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Citiy.swift; sourceTree = "<group>"; };
 		D880F25F29C0AF04007DE2F6 /* Link.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Link.swift; sourceTree = "<group>"; };
 		D880F26129C0AF29007DE2F6 /* Metadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Metadata.swift; sourceTree = "<group>"; };
 		D880F26329C0AF6B007DE2F6 /* Country.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Country.swift; sourceTree = "<group>"; };
@@ -106,7 +106,7 @@
 		D880F25929BF8B34007DE2F6 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				D880F25A29BF8BE7007DE2F6 /* City.swift */,
+				D880F25A29BF8BE7007DE2F6 /* Citiy.swift */,
 				D880F26329C0AF6B007DE2F6 /* Country.swift */,
 				D880F25F29C0AF04007DE2F6 /* Link.swift */,
 				D880F26129C0AF29007DE2F6 /* Metadata.swift */,
@@ -196,7 +196,7 @@
 				D880F26429C0AF6B007DE2F6 /* Country.swift in Sources */,
 				D880F24729BF8A75007DE2F6 /* StartViewController.swift in Sources */,
 				D880F24329BF8A75007DE2F6 /* AppDelegate.swift in Sources */,
-				D880F25B29BF8BE7007DE2F6 /* City.swift in Sources */,
+				D880F25B29BF8BE7007DE2F6 /* Citiy.swift in Sources */,
 				D880F26629C0B5CE007DE2F6 /* NetworkManager.swift in Sources */,
 				D880F24529BF8A75007DE2F6 /* SceneDelegate.swift in Sources */,
 				D880F26229C0AF29007DE2F6 /* Metadata.swift in Sources */,
