@@ -8,8 +8,9 @@
 import Foundation
 
 enum List: String {
-    case citiesUrl = "https://wft-geo-db.p.rapidapi.com/v1/geo/cities"
-    case countriesUrl = "https://wft-geo-db.p.rapidapi.com/v1/geo/countries"
+    case hostUrl = "https://wft-geo-db.p.rapidapi.com"
+    case countriesUrl = "/v1/geo/countries?offset=0&limit=5"
+    case citiesUrl = "/v1/geo/cities?offset=0&limit=5"
 }
 
 enum NetError: Error {
@@ -93,9 +94,5 @@ class NetworkManager {
                 print(error.localizedDescription)
             }
         }.resume()
-        
-        // KKOZKIGBCCUK
-        // TBWOCCIXOWQG - Таня
-//        23/03 13:30
     }
 }

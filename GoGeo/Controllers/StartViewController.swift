@@ -9,35 +9,43 @@ import UIKit
 
 class StartViewController: UIViewController {
 
+    private var allCountries = [Country]()
+    
+    private var printListCount: ([Country]) -> Void = { print($0.count) }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        fetchCities()
+        getCountriesList(completion: printListCount)
     }
     
-    private func fetchCities() {
-        NetworkManager.shared.fetch(CitiesResponse.self, from: List.citiesUrl.rawValue)
-        { [weak self] result in
-            switch result {
-            case .success(let ciites):
-                self?.printInfoOnCities(ciites.data)
-            case .failure(let error):
-                print(error.localizedDescription)
+    private func getCountriesList(completion: @escaping ([Country]) -> Void) {
+        
+        var currentOffset = 0
+        var totalCount = 0
+        var url = List.hostUrl.rawValue + List.countriesUrl.rawValue
+        
+        repeat {
+            NetworkManager.shared.fetch(CountriesResponse.self, from: url)
+            { [weak self] result in
+                switch result {
+                case .success(let countries):
+                    self?.allCountries.append(contentsOf: countries.data)
+                    
+                    currentOffset = countries.metadata.currentOffset
+                    totalCount = countries.metadata.totalCount
+                    // Get link for next 5 records
+                    if let nextIndex = countries.links.firstIndex(where: { $0.rel == "next" }) {
+                        url = List.hostUrl.rawValue + countries.links[nextIndex].href
+                    }
+
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
             }
-        }
-    }
-    
-    private func printInfoOnCities(_ cities: [CityDetails]) {
-        cities.forEach { city in
-            
-            let description = """
-                Country:    \(city.country) (code: \(city.countryCode))
-                City:       \(city.name)
-                GPS:        \(city.latitude):\(city.latitude)
-                ---------------------------------------------------------
-                """
-            print(description)
-        }
+        } while (totalCount - currentOffset) > 5
+        
+        completion(allCountries)
     }
 }
 
