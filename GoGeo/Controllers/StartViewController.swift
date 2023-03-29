@@ -15,6 +15,8 @@ class StartViewController: UIViewController {
     
     private let activityIndicator = UIActivityIndicatorView(style: .large)
     
+    private var counter = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -23,17 +25,17 @@ class StartViewController: UIViewController {
         
         activityIndicator.startAnimating()
         
-        getChunkOfCountries { [weak self] countries, offset, url in
+        getChunkOfCountries { [weak self] countries, totalCount, offset, url in
             self?.allCountries.append(contentsOf: countries)
             self?.allCountries.forEach { print($0.name) }
-            print(offset)
-            print(url)
+            print("Left to download: \(totalCount - offset)")
+            print("Next batch: \(url)")
             
             self?.activityIndicator.stopAnimating()
         }
     }
     
-    private func getChunkOfCountries(completion: @escaping ([Country], Int, String) -> Void) {
+    private func getChunkOfCountries(completion: @escaping ([Country], Int, Int, String) -> Void) {
         
         NetworkManager.shared.fetch(CountriesResponse.self, from: url) { [self] result in
             
@@ -44,7 +46,11 @@ class StartViewController: UIViewController {
                     self.url = List.hostUrl.rawValue + countries.links[nextIndex].href
                 }
                 
-                completion(countries.data, countries.metadata.currentOffset, url)
+                completion(countries.data,
+                           countries.metadata.totalCount,
+                           countries.metadata.currentOffset,
+                           url
+                )
                 
             case .failure(let error):
                 print(error.localizedDescription)
