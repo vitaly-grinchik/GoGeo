@@ -11,41 +11,54 @@ class StartViewController: UIViewController {
 
     private var allCountries = [Country]()
     
-    private var printListCount: ([Country]) -> Void = { print($0.count) }
+    private var url = List.hostUrl.rawValue + List.countriesUrl.rawValue
+    
+    private let activityIndicator = UIActivityIndicatorView(style: .large)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        getCountriesList(completion: printListCount)
+        view.addSubview(activityIndicator)
+        layoutIndicator()
+        
+        activityIndicator.startAnimating()
+        
+        getChunkOfCountries { [weak self] countries, offset, url in
+            self?.allCountries.append(contentsOf: countries)
+            self?.allCountries.forEach { print($0.name) }
+            print(offset)
+            print(url)
+            
+            self?.activityIndicator.stopAnimating()
+        }
     }
     
-    private func getCountriesList(completion: @escaping ([Country]) -> Void) {
+    private func getChunkOfCountries(completion: @escaping ([Country], Int, String) -> Void) {
         
-        var currentOffset = 0
-        var totalCount = 0
-        var url = List.hostUrl.rawValue + List.countriesUrl.rawValue
-        
-        repeat {
-            NetworkManager.shared.fetch(CountriesResponse.self, from: url)
-            { [weak self] result in
-                switch result {
-                case .success(let countries):
-                    self?.allCountries.append(contentsOf: countries.data)
-                    
-                    currentOffset = countries.metadata.currentOffset
-                    totalCount = countries.metadata.totalCount
-                    // Get link for next 5 records
-                    if let nextIndex = countries.links.firstIndex(where: { $0.rel == "next" }) {
-                        url = List.hostUrl.rawValue + countries.links[nextIndex].href
-                    }
-
-                case .failure(let error):
-                    print(error.localizedDescription)
+        NetworkManager.shared.fetch(CountriesResponse.self, from: url) { [self] result in
+            
+            switch result {
+            case .success(let countries):
+                
+                if let nextIndex = countries.links.firstIndex(where: { $0.rel == "next" }) {
+                    self.url = List.hostUrl.rawValue + countries.links[nextIndex].href
                 }
+                
+                completion(countries.data, countries.metadata.currentOffset, url)
+                
+            case .failure(let error):
+                print(error.localizedDescription)
             }
-        } while (totalCount - currentOffset) > 5
-        
-        completion(allCountries)
+        }
+                
+    }
+    
+    private func layoutIndicator() {
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor)]
+        )
     }
 }
 
