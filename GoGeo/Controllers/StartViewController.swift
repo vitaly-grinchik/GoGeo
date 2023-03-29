@@ -15,7 +15,7 @@ class StartViewController: UIViewController {
     
     private let activityIndicator = UIActivityIndicatorView(style: .large)
     
-//    private var counter = 0
+    private var counter = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,32 +25,33 @@ class StartViewController: UIViewController {
         
         activityIndicator.startAnimating()
         
-        getChunkOfCountries { countries, totalCount, offset, url in
-            self.allCountries.append(contentsOf: countries)
+//        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+//            
+//        }
+        
+        getChunkOfCountries { data in
+            self.allCountries.append(contentsOf: data.data)
+            
+            if let nextIndex = data.links.firstIndex(where: { $0.rel == "next" }) {
+                self.url = List.hostUrl.rawValue + data.links[nextIndex].href
+            }
+            
+            // Print out data
             self.allCountries.forEach { print($0.name) }
-            print("Left to download: \(totalCount - offset)")
-            print("Next batch: \(url)")
+            print("Left to download: \(data.metadata.currentOffset)")
+            print("Next batch: \(self.url)")
             
             self.activityIndicator.stopAnimating()
         }
     }
     
-    private func getChunkOfCountries(completion: @escaping ([Country], Int, Int, String) -> Void) {
+    private func getChunkOfCountries(completion: @escaping (CountriesResponse) -> Void) {
         
-        NetworkManager.shared.fetch(CountriesResponse.self, from: url) { [self] result in
+        NetworkManager.shared.fetch(CountriesResponse.self, from: url) { result in
             
             switch result {
             case .success(let countries):
-                
-                if let nextIndex = countries.links.firstIndex(where: { $0.rel == "next" }) {
-                    self.url = List.hostUrl.rawValue + countries.links[nextIndex].href
-                }
-                
-                completion(countries.data,
-                           countries.metadata.totalCount,
-                           countries.metadata.currentOffset,
-                           url
-                )
+                completion(countries)
                 
             case .failure(let error):
                 print(error.localizedDescription)
