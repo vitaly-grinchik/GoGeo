@@ -5,7 +5,7 @@
 //  Created by Виталий Гринчик on 14.03.23.
 //
 
-// A list of countries
+// Five countries list page
 struct CountriesResponse: Decodable {
     let data: [Country]
     let links: [Link]

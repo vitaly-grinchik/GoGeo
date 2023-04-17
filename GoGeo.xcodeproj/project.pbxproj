@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D85E720C29D5E43F008B048A /* CountriesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85E720B29D5E43F008B048A /* CountriesTableViewController.swift */; };
+		D86FBDB329ED650E0014F229 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D86FBDB229ED650E0014F229 /* Localizable.strings */; };
 		D880F24329BF8A75007DE2F6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D880F24229BF8A75007DE2F6 /* AppDelegate.swift */; };
 		D880F24529BF8A75007DE2F6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D880F24429BF8A75007DE2F6 /* SceneDelegate.swift */; };
 		D880F24729BF8A75007DE2F6 /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D880F24629BF8A75007DE2F6 /* StartViewController.swift */; };
@@ -18,9 +20,12 @@
 		D880F26229C0AF29007DE2F6 /* Metadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = D880F26129C0AF29007DE2F6 /* Metadata.swift */; };
 		D880F26429C0AF6B007DE2F6 /* Country.swift in Sources */ = {isa = PBXBuildFile; fileRef = D880F26329C0AF6B007DE2F6 /* Country.swift */; };
 		D880F26629C0B5CE007DE2F6 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D880F26529C0B5CE007DE2F6 /* NetworkManager.swift */; };
+		D8ACCB7F29D5D74D005F8495 /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8ACCB7E29D5D74D005F8495 /* DataStore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D85E720B29D5E43F008B048A /* CountriesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesTableViewController.swift; sourceTree = "<group>"; };
+		D86FBDB229ED650E0014F229 /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		D880F23F29BF8A74007DE2F6 /* GoGeo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GoGeo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D880F24229BF8A75007DE2F6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D880F24429BF8A75007DE2F6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -34,6 +39,7 @@
 		D880F26129C0AF29007DE2F6 /* Metadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Metadata.swift; sourceTree = "<group>"; };
 		D880F26329C0AF6B007DE2F6 /* Country.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Country.swift; sourceTree = "<group>"; };
 		D880F26529C0B5CE007DE2F6 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		D8ACCB7E29D5D74D005F8495 /* DataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +105,7 @@
 			isa = PBXGroup;
 			children = (
 				D880F24629BF8A75007DE2F6 /* StartViewController.swift */,
+				D85E720B29D5E43F008B048A /* CountriesTableViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -106,8 +113,8 @@
 		D880F25929BF8B34007DE2F6 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				D880F25A29BF8BE7007DE2F6 /* Citiy.swift */,
 				D880F26329C0AF6B007DE2F6 /* Country.swift */,
+				D880F25A29BF8BE7007DE2F6 /* Citiy.swift */,
 				D880F25F29C0AF04007DE2F6 /* Link.swift */,
 				D880F26129C0AF29007DE2F6 /* Metadata.swift */,
 			);
@@ -118,6 +125,8 @@
 			isa = PBXGroup;
 			children = (
 				D880F26529C0B5CE007DE2F6 /* NetworkManager.swift */,
+				D8ACCB7E29D5D74D005F8495 /* DataStore.swift */,
+				D86FBDB229ED650E0014F229 /* Localizable.strings */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -181,6 +190,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D880F24F29BF8A87007DE2F6 /* LaunchScreen.storyboard in Resources */,
+				D86FBDB329ED650E0014F229 /* Localizable.strings in Resources */,
 				D880F24C29BF8A87007DE2F6 /* Assets.xcassets in Resources */,
 				D880F24A29BF8A75007DE2F6 /* Main.storyboard in Resources */,
 			);
@@ -200,6 +210,8 @@
 				D880F26629C0B5CE007DE2F6 /* NetworkManager.swift in Sources */,
 				D880F24529BF8A75007DE2F6 /* SceneDelegate.swift in Sources */,
 				D880F26229C0AF29007DE2F6 /* Metadata.swift in Sources */,
+				D8ACCB7F29D5D74D005F8495 /* DataStore.swift in Sources */,
+				D85E720C29D5E43F008B048A /* CountriesTableViewController.swift in Sources */,
 				D880F26029C0AF04007DE2F6 /* Link.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
