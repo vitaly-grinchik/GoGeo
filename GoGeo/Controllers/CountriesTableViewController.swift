@@ -7,90 +7,112 @@
 
 import UIKit
 
-class CountriesTableViewController: UITableViewController {
+final class CountriesTableViewController: UITableViewController {
     
     private let countries = DataStore.shared.countries
     
+    private var filteredCountries = [String]()
+    
     private let titles = DataStore.shared.getTitlesForGroups()
+    
+    private let groupsOfCountries = DataStore.shared.getGroups()
+    
+    private var isFiltering: Bool {
+        searchController.searchBar.text != nil && searchController.searchBar.text != ""
+    }
+    
+    // nil cause this VC is being used for results presentation
+    private let searchController = UISearchController(searchResultsController: nil)
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        setupUI()
+    }
+    
+    private func setupUI() {
+        setupTableView()
+        setupNaviBar()
+        setupSearchController()
+    }
+    
+    private func setupTableView() {
+        tableView.separatorStyle = .singleLine
+        tableView.separatorColor = .lightGray
+        tableView.showsVerticalScrollIndicator = false
+    }
+    
+    private func setupNaviBar() {
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.topItem?.title = "Countries"
+    }
+    
+    private func setupSearchController() {
+        searchController.searchResultsUpdater = self
+        // Make search results interactible
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Find a country"
+        // Add seacrh bar onto navigation bar
+        navigationItem.searchController = searchController
     }
 
-    // MARK: - UITableViewDataSource
+}
 
+// MARK: - Navigation
+extension CountriesTableViewController {
+    
+    private func showInfoOn(_ country: String) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        guard let detailsVC = storyboard.instantiateViewController(withIdentifier: "DetailsVC") as? DetailsViewController else { return }
+        detailsVC.countryName = country
+    }
+    
+}
+
+// MARK: - UITableViewDataSource
+extension CountriesTableViewController {
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
-        titles.count
+        isFiltering ? 1 : titles.count
     }
-
+    
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        titles[section]
+        isFiltering ? "Found: \(filteredCountries.count)" : titles[section]
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        DataStore.shared.getGroups()[section].count
+        isFiltering ? filteredCountries.count : groupsOfCountries[section].count
     }
-
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        let country = countries[indexPath.row]
+        let country = isFiltering ? filteredCountries[indexPath.row] : groupsOfCountries[indexPath.section][indexPath.row]
         
         var cellContent = cell.defaultContentConfiguration()
         cellContent.text = country
         cell.contentConfiguration = cellContent
-       
+        
         return cell
     }
-   
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+    
+}
+
+// MARK: - UITableViewDelegate
+extension CountriesTableViewController {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let country = isFiltering ? filteredCountries[indexPath.row] : groupsOfCountries[indexPath.section][indexPath.row]
+        showInfoOn(country)
     }
-    */
+}
 
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+// MARK: - Search results updating
+extension CountriesTableViewController: UISearchResultsUpdating {
+    
+    // Update filter on text change in search bar
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let searchText = searchController.searchBar.text else { return }
+
+        filteredCountries = countries.filter { $0.lowercased().contains(searchText.lowercased()) }
+        tableView.reloadData()
     }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+    
 }

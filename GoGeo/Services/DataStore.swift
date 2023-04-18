@@ -212,7 +212,7 @@ final class DataStore {
     
     // Get an array of arrays of names with the same first letter in alphabetic order
     func getGroups() -> [[String]] {
-        var groups : [[String]] = []
+        var groups: [[String]] = []
         var list = countries.sorted() // List to process
         
         while !list.isEmpty {
