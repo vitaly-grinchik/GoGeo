@@ -64,7 +64,10 @@ extension CountriesTableViewController {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         guard let detailsVC = storyboard.instantiateViewController(withIdentifier: "DetailsVC") as? DetailsViewController else { return }
         detailsVC.countryName = country
+        present(detailsVC, animated: true)
     }
+    
+    
     
 }
 
