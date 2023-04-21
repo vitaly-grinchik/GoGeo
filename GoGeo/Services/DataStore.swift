@@ -210,7 +210,7 @@ final class DataStore {
         "Zimbabwe"
     ]
     
-    // Get an array of arrays of names with the same first letter in alphabetic order
+    // Get groups of names with the same first letter in alphabetic order
     func getGroups() -> [[String]] {
         var groups: [[String]] = []
         var list = countries.sorted() // List to process
@@ -229,7 +229,7 @@ final class DataStore {
         return groups
     }
     
-    // Get a list of first letters for every group in alphabetic order
+    // Get a list of first letters of all groups
     func getTitlesForGroups() -> [String] {
         let groups = getGroups()
         var titles = [String]()

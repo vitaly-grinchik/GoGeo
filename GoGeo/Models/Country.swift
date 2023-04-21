@@ -6,6 +6,10 @@
 //
 
 // Minimal country info
+struct CountryResponse: Decodable {
+    let data: [Country]
+}
+
 struct Country: Decodable {
     let name: String
     let wikiDataId: String

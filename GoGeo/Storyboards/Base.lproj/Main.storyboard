@@ -11,7 +11,7 @@
         <!--Root View Controller-->
         <scene sceneID="Wl7-9R-fFx">
             <objects>
-                <tableViewController storyboardIdentifier="CountriesTableViewController" clearsSelectionOnViewWillAppear="NO" id="SkT-wI-0nf" customClass="CountriesTableViewController" customModule="GoGeo" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="CountriesTableViewController" clearsSelectionOnViewWillAppear="NO" id="SkT-wI-0nf" customClass="MainViewController" customModule="GoGeo" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="j6s-3c-Xjd">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -46,17 +46,17 @@
             </objects>
             <point key="canvasLocation" x="634.35114503816794" y="-84.507042253521135"/>
         </scene>
-        <!--Details View Controller-->
+        <!--Country Details View Controller-->
         <scene sceneID="gYb-aj-3qm">
             <objects>
-                <viewController storyboardIdentifier="DetailsVC" id="XSY-WR-ARB" customClass="DetailsViewController" customModule="GoGeo" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DetailsVC" id="XSY-WR-ARB" customClass="CountryDetailsViewController" customModule="GoGeo" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Q8h-Qj-fnl">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yOQ-xL-UKq">
-                                <rect key="frame" x="148.66666666666666" y="194" width="96" height="49"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="41"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yOQ-xL-UKq">
+                                <rect key="frame" x="20" y="194" width="353" height="52.666666666666657"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="44"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -65,7 +65,9 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="yOQ-xL-UKq" firstAttribute="top" secondItem="yZ4-zk-m8s" secondAttribute="top" constant="135" id="8RE-Qn-9b4"/>
+                            <constraint firstItem="yZ4-zk-m8s" firstAttribute="trailing" secondItem="yOQ-xL-UKq" secondAttribute="trailing" constant="20" id="Bhk-56-gfv"/>
                             <constraint firstItem="yOQ-xL-UKq" firstAttribute="centerX" secondItem="yZ4-zk-m8s" secondAttribute="centerX" id="lwO-Sv-eYU"/>
+                            <constraint firstItem="yOQ-xL-UKq" firstAttribute="leading" secondItem="yZ4-zk-m8s" secondAttribute="leading" constant="20" id="nYk-1g-s3B"/>
                         </constraints>
                     </view>
                     <connections>

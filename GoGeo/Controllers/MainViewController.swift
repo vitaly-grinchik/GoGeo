@@ -1,5 +1,5 @@
 //
-//  CountriesTableViewController.swift
+//  MainViewController.swift
 //  GoGeo
 //
 //  Created by Виталий Гринчик on 30.03.23.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class CountriesTableViewController: UITableViewController {
+final class MainViewController: UITableViewController {
     
     private let countries = DataStore.shared.countries
     
@@ -58,21 +58,19 @@ final class CountriesTableViewController: UITableViewController {
 }
 
 // MARK: - Navigation
-extension CountriesTableViewController {
+extension MainViewController {
     
-    private func showInfoOn(_ country: String) {
+    private func presentCountryDetailsOn(_ country: String) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        guard let detailsVC = storyboard.instantiateViewController(withIdentifier: "DetailsVC") as? DetailsViewController else { return }
+        guard let detailsVC = storyboard.instantiateViewController(withIdentifier: "DetailsVC") as? CountryDetailsViewController else { return }
         detailsVC.countryName = country
-        present(detailsVC, animated: true)
+        navigationController?.pushViewController(detailsVC, animated: true)
     }
-    
-    
     
 }
 
 // MARK: - UITableViewDataSource
-extension CountriesTableViewController {
+extension MainViewController {
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         isFiltering ? 1 : titles.count
@@ -100,21 +98,22 @@ extension CountriesTableViewController {
 }
 
 // MARK: - UITableViewDelegate
-extension CountriesTableViewController {
+extension MainViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let country = isFiltering ? filteredCountries[indexPath.row] : groupsOfCountries[indexPath.section][indexPath.row]
-        showInfoOn(country)
+        presentCountryDetailsOn(country)
     }
+
 }
 
 // MARK: - Search results updating
-extension CountriesTableViewController: UISearchResultsUpdating {
+extension MainViewController: UISearchResultsUpdating {
     
     // Update filter on text change in search bar
     func updateSearchResults(for searchController: UISearchController) {
         guard let searchText = searchController.searchBar.text else { return }
 
-        filteredCountries = countries.filter { $0.lowercased().contains(searchText.lowercased()) }
+        filteredCountries = countries.filter { $0.lowercased().hasPrefix(searchText.lowercased()) }
         tableView.reloadData()
     }
     

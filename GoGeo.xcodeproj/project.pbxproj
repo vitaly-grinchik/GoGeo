@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D833855F29EF1E430099E42F /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D833855E29EF1E430099E42F /* DetailsViewController.swift */; };
-		D85E720C29D5E43F008B048A /* CountriesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85E720B29D5E43F008B048A /* CountriesTableViewController.swift */; };
+		D833855F29EF1E430099E42F /* CountryDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D833855E29EF1E430099E42F /* CountryDetailsViewController.swift */; };
+		D85E720C29D5E43F008B048A /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85E720B29D5E43F008B048A /* MainViewController.swift */; };
 		D86FBDB329ED650E0014F229 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D86FBDB229ED650E0014F229 /* Localizable.strings */; };
 		D880F24329BF8A75007DE2F6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D880F24229BF8A75007DE2F6 /* AppDelegate.swift */; };
 		D880F24529BF8A75007DE2F6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D880F24429BF8A75007DE2F6 /* SceneDelegate.swift */; };
@@ -22,8 +22,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		D833855E29EF1E430099E42F /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
-		D85E720B29D5E43F008B048A /* CountriesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesTableViewController.swift; sourceTree = "<group>"; };
+		D833855E29EF1E430099E42F /* CountryDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryDetailsViewController.swift; sourceTree = "<group>"; };
+		D85E720B29D5E43F008B048A /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		D86FBDB229ED650E0014F229 /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		D880F23F29BF8A74007DE2F6 /* GoGeo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GoGeo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D880F24229BF8A75007DE2F6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -100,8 +100,8 @@
 		D880F25829BF8B16007DE2F6 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				D85E720B29D5E43F008B048A /* CountriesTableViewController.swift */,
-				D833855E29EF1E430099E42F /* DetailsViewController.swift */,
+				D85E720B29D5E43F008B048A /* MainViewController.swift */,
+				D833855E29EF1E430099E42F /* CountryDetailsViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -203,8 +203,8 @@
 				D880F26629C0B5CE007DE2F6 /* NetworkManager.swift in Sources */,
 				D880F24529BF8A75007DE2F6 /* SceneDelegate.swift in Sources */,
 				D8ACCB7F29D5D74D005F8495 /* DataStore.swift in Sources */,
-				D85E720C29D5E43F008B048A /* CountriesTableViewController.swift in Sources */,
-				D833855F29EF1E430099E42F /* DetailsViewController.swift in Sources */,
+				D85E720C29D5E43F008B048A /* MainViewController.swift in Sources */,
+				D833855F29EF1E430099E42F /* CountryDetailsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

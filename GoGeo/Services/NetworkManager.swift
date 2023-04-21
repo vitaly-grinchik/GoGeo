@@ -7,10 +7,11 @@
 
 import Foundation
 
-enum List: String {
-    case hostUrl = "https://wft-geo-db.p.rapidapi.com"
-    case countriesUrl = "/v1/geo/countries?offset=0&limit=5"
-    case citiesUrl = "/v1/geo/cities?offset=0&limit=5"
+enum Url: String {
+    case countrySearchUrl = "https://wft-geo-db.p.rapidapi.com/v1/geo/countries?namePrefix="
+    case countryDetailsSearchUrl = "https://wft-geo-db.p.rapidapi.com/v1/geo/countries/"
+    case citySearchUrl = "https://wft-geo-db.p.rapidapi.com/v1/geo/cities?namePrefix="
+    case cityDetailsSearchUrl = "https://wft-geo-db.p.rapidapi.com/v1/geo/cities/"
 }
 
 enum NetError: Error {
@@ -18,13 +19,6 @@ enum NetError: Error {
     case invalidData
     case decodeError
     case noImageData
-}
-
-enum LinkRef: String {
-    case first
-    case prev
-    case next
-    case last
 }
 
 class NetworkManager {
