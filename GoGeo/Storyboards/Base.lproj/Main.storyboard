@@ -54,24 +54,46 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yOQ-xL-UKq">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CountryName" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yOQ-xL-UKq">
                                 <rect key="frame" x="20" y="194" width="353" height="52.666666666666657"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="44"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="wikiId" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VH4-WR-4Va">
+                                <rect key="frame" x="156" y="266.66666666666669" width="81.333333333333314" height="39.666666666666686"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="33"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="Vwb-n4-xJV">
+                                <rect key="frame" x="186.66666666666666" y="276.66666666666669" width="20" height="20"/>
+                            </activityIndicatorView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vD2-vF-VXw">
+                                <rect key="frame" x="76.666666666666686" y="339" width="240" height="128"/>
+                            </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="yZ4-zk-m8s"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="Vwb-n4-xJV" firstAttribute="centerX" secondItem="VH4-WR-4Va" secondAttribute="centerX" id="2Ey-GC-2RA"/>
                             <constraint firstItem="yOQ-xL-UKq" firstAttribute="top" secondItem="yZ4-zk-m8s" secondAttribute="top" constant="135" id="8RE-Qn-9b4"/>
+                            <constraint firstItem="Vwb-n4-xJV" firstAttribute="centerY" secondItem="VH4-WR-4Va" secondAttribute="centerY" id="8jH-I6-m5h"/>
                             <constraint firstItem="yZ4-zk-m8s" firstAttribute="trailing" secondItem="yOQ-xL-UKq" secondAttribute="trailing" constant="20" id="Bhk-56-gfv"/>
+                            <constraint firstItem="VH4-WR-4Va" firstAttribute="centerX" secondItem="Q8h-Qj-fnl" secondAttribute="centerX" id="JPI-XY-y8v"/>
+                            <constraint firstItem="vD2-vF-VXw" firstAttribute="centerX" secondItem="yZ4-zk-m8s" secondAttribute="centerX" id="ZwS-If-NxU"/>
+                            <constraint firstItem="VH4-WR-4Va" firstAttribute="top" secondItem="yOQ-xL-UKq" secondAttribute="bottom" constant="20" id="img-Al-wFQ"/>
                             <constraint firstItem="yOQ-xL-UKq" firstAttribute="centerX" secondItem="yZ4-zk-m8s" secondAttribute="centerX" id="lwO-Sv-eYU"/>
                             <constraint firstItem="yOQ-xL-UKq" firstAttribute="leading" secondItem="yZ4-zk-m8s" secondAttribute="leading" constant="20" id="nYk-1g-s3B"/>
+                            <constraint firstItem="vD2-vF-VXw" firstAttribute="width" secondItem="Q8h-Qj-fnl" secondAttribute="height" multiplier="20:71" id="qlB-fo-lph"/>
+                            <constraint firstItem="vD2-vF-VXw" firstAttribute="height" secondItem="Q8h-Qj-fnl" secondAttribute="height" multiplier="0.150235" id="xAT-2v-tH9"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="Vwb-n4-xJV" id="i6X-2U-Ldf"/>
                         <outlet property="countryNameLabel" destination="yOQ-xL-UKq" id="W4i-tK-nDr"/>
+                        <outlet property="flagImageView" destination="vD2-vF-VXw" id="fcS-dC-m5a"/>
+                        <outlet property="wikiIDLabel" destination="VH4-WR-4Va" id="CRF-fr-Crp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jnv-lU-Xl1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

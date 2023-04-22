@@ -102,6 +102,7 @@ extension MainViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let country = isFiltering ? filteredCountries[indexPath.row] : groupsOfCountries[indexPath.section][indexPath.row]
         presentCountryDetailsOn(country)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 
 }

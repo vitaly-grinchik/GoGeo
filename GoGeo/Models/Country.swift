@@ -15,6 +15,10 @@ struct Country: Decodable {
     let wikiDataId: String
 }
 
+struct CountryInfo: Decodable {
+    let data: CountryDetails
+}
+
 // CountryDetails: Full country details
 struct CountryDetails: Decodable {
     let capital: String
@@ -26,3 +30,4 @@ struct CountryDetails: Decodable {
     let numRegions: Int
     let wikiDataId: String
 }
+
