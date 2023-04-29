@@ -7,34 +7,34 @@
 
 import Foundation
 
-enum Url: String {
+enum List: String {
     case countrySearchUrl = "https://wft-geo-db.p.rapidapi.com/v1/geo/countries?namePrefix="
     case countryDetailsSearchUrl = "https://wft-geo-db.p.rapidapi.com/v1/geo/countries/"
     case citySearchUrl = "https://wft-geo-db.p.rapidapi.com/v1/geo/cities?namePrefix="
     case cityDetailsSearchUrl = "https://wft-geo-db.p.rapidapi.com/v1/geo/cities/"
 }
 
-enum NetError: Error {
-    case invalidUrl
-    case invalidData
-    case decodeError
-    case noImageData
+enum NetError: String, Error {
+    case invalidData = "Invalid data"
+    case invalidUrl = "Invalid URL"
+    case requestFailed = "Request failed"
+    case decodeError = "JSON decoding error"
+    case noImageData = "No umage data found"
 }
 
 class NetworkManager {
-    
     static let shared = NetworkManager()
     
-    // API Key
-    private let headers = [
-        "X-RapidAPI-Key": "3d736771d3msh14a3562b22f1641p1af6f7jsn1b7fcb2fc09b",
-        "X-RapidAPI-Host": "wft-geo-db.p.rapidapi.com"
+    // RapidAPI Key
+    static let rapidHeaders = [
+        "X-RapidAPI-Host": "wft-geo-db.p.rapidapi.com",
+        "X-RapidAPI-Key": "3d736771d3msh14a3562b22f1641p1af6f7jsn1b7fcb2fc09b"
     ]
     
     private init() {}
     
-    func fetchImage(from url: String?, completion: @escaping (Result<Data, NetError>) -> Void) {
-        guard let url = URL(string: url ?? "") else {
+    private func fetchImageData(from url: String, completion: @escaping (Result<Data, NetError>) -> Void) {
+        guard let url = URL(string: url) else {
             completion(.failure(.invalidUrl))
             return
         }
@@ -44,49 +44,39 @@ class NetworkManager {
                 completion(.failure(.noImageData))
                 return
             }
-            
             DispatchQueue.main.async {
                 completion(.success(imageData))
             }
         }
     }
     
-    func fetch<T: Decodable>(_ type: T.Type, from url: String?, completion: @escaping (Result<T, NetError>) -> Void) {
-        
-        // Instantiate URL
-        guard let url = URL(string: url ?? "") else {
-            completion(.failure(.invalidUrl))
-            return
-        }
-        
-        // Instantiate request
-        var request = URLRequest(
-            url: url,
-            cachePolicy: .useProtocolCachePolicy,
-            timeoutInterval: 10.0
-        )
-        request.allHTTPHeaderFields = headers
-            
+    // Data fetch
+    func fetchData<T: Decodable>(_ type: T.Type, using request: URLRequest, completion: @escaping (Result<T, NetError>) -> Void) {
         // Instantiate session
-        URLSession.shared.dataTask(with: request) { data, _, error in
-            guard let data = data else {
-                completion(.failure(.invalidData))
-                print(error?.localizedDescription ?? "No error description")
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let _ = error {
+                if let serverResponse = response as? HTTPURLResponse {
+                    let code = serverResponse.statusCode
+                    print(NetError.requestFailed.rawValue)
+                    print(HTTPURLResponse.localizedString(forStatusCode: code))
+                }
+                completion(.failure(.requestFailed))
                 return
             }
             
-            // Parsing
-            let decoder = JSONDecoder()
-            do {
-                let type = try decoder.decode(T.self, from: data)
-                DispatchQueue.main.async {
-                    completion(.success(type))
-                }
-                
-            } catch let error {
-                completion(.failure(.decodeError))
-                print(error.localizedDescription)
+            guard let data = data else {
+                print(NetError.invalidData.rawValue)
+                completion(.failure(.invalidData))
+                return
             }
+
+            if let data = try? JSONDecoder().decode(type, from: data) {
+                completion(.success(data))
+            } else {
+                completion(.failure(.decodeError))
+            }
+            
         }.resume()
     }
+    
 }

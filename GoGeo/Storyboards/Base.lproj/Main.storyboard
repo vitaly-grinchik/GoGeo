@@ -69,7 +69,7 @@
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="Vwb-n4-xJV">
                                 <rect key="frame" x="186.66666666666666" y="276.66666666666669" width="20" height="20"/>
                             </activityIndicatorView>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vD2-vF-VXw">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="vD2-vF-VXw">
                                 <rect key="frame" x="76.666666666666686" y="339" width="240" height="128"/>
                             </imageView>
                         </subviews>
@@ -86,6 +86,7 @@
                             <constraint firstItem="yOQ-xL-UKq" firstAttribute="centerX" secondItem="yZ4-zk-m8s" secondAttribute="centerX" id="lwO-Sv-eYU"/>
                             <constraint firstItem="yOQ-xL-UKq" firstAttribute="leading" secondItem="yZ4-zk-m8s" secondAttribute="leading" constant="20" id="nYk-1g-s3B"/>
                             <constraint firstItem="vD2-vF-VXw" firstAttribute="width" secondItem="Q8h-Qj-fnl" secondAttribute="height" multiplier="20:71" id="qlB-fo-lph"/>
+                            <constraint firstItem="yZ4-zk-m8s" firstAttribute="bottom" secondItem="vD2-vF-VXw" secondAttribute="bottom" constant="351" id="rYI-0o-T5w"/>
                             <constraint firstItem="vD2-vF-VXw" firstAttribute="height" secondItem="Q8h-Qj-fnl" secondAttribute="height" multiplier="0.150235" id="xAT-2v-tH9"/>
                         </constraints>
                     </view>

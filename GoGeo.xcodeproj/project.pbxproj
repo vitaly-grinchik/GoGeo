@@ -18,6 +18,7 @@
 		D880F25B29BF8BE7007DE2F6 /* Citiy.swift in Sources */ = {isa = PBXBuildFile; fileRef = D880F25A29BF8BE7007DE2F6 /* Citiy.swift */; };
 		D880F26429C0AF6B007DE2F6 /* Country.swift in Sources */ = {isa = PBXBuildFile; fileRef = D880F26329C0AF6B007DE2F6 /* Country.swift */; };
 		D880F26629C0B5CE007DE2F6 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D880F26529C0B5CE007DE2F6 /* NetworkManager.swift */; };
+		D892F8B829FA8A2F0004972E /* SwiftDraw in Frameworks */ = {isa = PBXBuildFile; productRef = D892F8B729FA8A2F0004972E /* SwiftDraw */; };
 		D8ACCB7F29D5D74D005F8495 /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8ACCB7E29D5D74D005F8495 /* DataStore.swift */; };
 /* End PBXBuildFile section */
 
@@ -43,6 +44,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D892F8B829FA8A2F0004972E /* SwiftDraw in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -141,6 +143,9 @@
 			dependencies = (
 			);
 			name = GoGeo;
+			packageProductDependencies = (
+				D892F8B729FA8A2F0004972E /* SwiftDraw */,
+			);
 			productName = GoGeo;
 			productReference = D880F23F29BF8A74007DE2F6 /* GoGeo.app */;
 			productType = "com.apple.product-type.application";
@@ -169,6 +174,9 @@
 				Base,
 			);
 			mainGroup = D880F23629BF8A74007DE2F6;
+			packageReferences = (
+				D892F8B629FA8A2F0004972E /* XCRemoteSwiftPackageReference "SwiftDraw" */,
+			);
 			productRefGroup = D880F24029BF8A74007DE2F6 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -428,6 +436,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D892F8B629FA8A2F0004972E /* XCRemoteSwiftPackageReference "SwiftDraw" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/swhitty/SwiftDraw.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D892F8B729FA8A2F0004972E /* SwiftDraw */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D892F8B629FA8A2F0004972E /* XCRemoteSwiftPackageReference "SwiftDraw" */;
+			productName = SwiftDraw;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D880F23729BF8A74007DE2F6 /* Project object */;
 }
