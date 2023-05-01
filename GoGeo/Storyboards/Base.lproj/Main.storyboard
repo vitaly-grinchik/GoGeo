@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Phn-Qs-3Jd">
-    <device id="retina4_0" orientation="portrait" appearance="light"/>
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -13,19 +13,19 @@
             <objects>
                 <tableViewController storyboardIdentifier="CountriesTableViewController" clearsSelectionOnViewWillAppear="NO" id="SkT-wI-0nf" customClass="MainViewController" customModule="GoGeo" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="j6s-3c-Xjd">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" textLabel="rlV-Mo-rPR" style="IBUITableViewCellStyleDefault" id="Y5q-a3-cmJ">
-                                <rect key="frame" x="0.0" y="50" width="320" height="43.5"/>
+                                <rect key="frame" x="0.0" y="50" width="414" height="43.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Y5q-a3-cmJ" id="7lV-5w-woT">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="rlV-Mo-rPR">
-                                            <rect key="frame" x="16" y="0.0" width="288" height="43.5"/>
+                                            <rect key="frame" x="20" y="0.0" width="374" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="0.0"/>
                                             <nil key="textColor"/>
@@ -51,26 +51,29 @@
             <objects>
                 <viewController storyboardIdentifier="DetailsVC" id="XSY-WR-ARB" customClass="CountryDetailsViewController" customModule="GoGeo" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Q8h-Qj-fnl">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.25" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="GoGeo_2" translatesAutoresizingMaskIntoConstraints="NO" id="gHy-QW-DEj">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                            </imageView>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="Vwb-n4-xJV">
-                                <rect key="frame" x="150" y="163" width="20" height="20"/>
+                                <rect key="frame" x="197" y="252" width="20" height="20"/>
                             </activityIndicatorView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="vD2-vF-VXw">
-                                <rect key="frame" x="53.5" y="102" width="213" height="142"/>
+                                <rect key="frame" x="39" y="150" width="336" height="224"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="vD2-vF-VXw" secondAttribute="height" multiplier="3:2" id="3SQ-kG-pEJ"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Country Name" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yOQ-xL-UKq">
-                                <rect key="frame" x="16" y="25" width="288" height="47"/>
+                                <rect key="frame" x="16" y="73" width="382" height="47"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="39"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="0xg-CN-QUJ">
-                                <rect key="frame" x="38" y="294" width="244" height="140"/>
+                                <rect key="frame" x="85" y="424" width="244" height="140"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="bottom" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="c9E-IL-dGq">
                                         <rect key="frame" x="0.0" y="0.0" width="114" height="140"/>
@@ -148,14 +151,18 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="0xg-CN-QUJ" firstAttribute="centerX" secondItem="Q8h-Qj-fnl" secondAttribute="centerX" id="71y-TB-w4l"/>
+                            <constraint firstItem="gHy-QW-DEj" firstAttribute="top" secondItem="Q8h-Qj-fnl" secondAttribute="top" id="8ut-HI-zSJ"/>
+                            <constraint firstItem="gHy-QW-DEj" firstAttribute="bottom" secondItem="yZ4-zk-m8s" secondAttribute="bottom" constant="34" id="9hL-tw-K1Z"/>
                             <constraint firstItem="vD2-vF-VXw" firstAttribute="height" secondItem="Q8h-Qj-fnl" secondAttribute="height" multiplier="0.25" id="AXy-sR-7Pl"/>
                             <constraint firstItem="vD2-vF-VXw" firstAttribute="top" secondItem="yOQ-xL-UKq" secondAttribute="bottom" constant="30" id="BQZ-iU-HpR"/>
                             <constraint firstItem="yOQ-xL-UKq" firstAttribute="leading" secondItem="yZ4-zk-m8s" secondAttribute="leading" constant="16" id="EKt-M8-8yw"/>
                             <constraint firstItem="Vwb-n4-xJV" firstAttribute="centerX" secondItem="Q8h-Qj-fnl" secondAttribute="centerX" id="IDb-CZ-p3C"/>
+                            <constraint firstItem="gHy-QW-DEj" firstAttribute="leading" secondItem="Q8h-Qj-fnl" secondAttribute="leading" id="K0N-fX-ZQa"/>
                             <constraint firstItem="vD2-vF-VXw" firstAttribute="centerX" secondItem="Q8h-Qj-fnl" secondAttribute="centerX" id="O9P-tF-p4V"/>
                             <constraint firstItem="0xg-CN-QUJ" firstAttribute="top" secondItem="vD2-vF-VXw" secondAttribute="bottom" constant="50" id="Ycn-Vu-aHH"/>
                             <constraint firstItem="Vwb-n4-xJV" firstAttribute="centerX" secondItem="vD2-vF-VXw" secondAttribute="centerX" id="aAE-un-dN1"/>
                             <constraint firstItem="yZ4-zk-m8s" firstAttribute="trailing" secondItem="yOQ-xL-UKq" secondAttribute="trailing" constant="16" id="cz5-et-FzY"/>
+                            <constraint firstItem="gHy-QW-DEj" firstAttribute="trailing" secondItem="yZ4-zk-m8s" secondAttribute="trailing" id="ee3-wT-feE"/>
                             <constraint firstItem="yOQ-xL-UKq" firstAttribute="top" secondItem="yZ4-zk-m8s" secondAttribute="top" constant="25" id="fX3-8q-qVB"/>
                             <constraint firstItem="Vwb-n4-xJV" firstAttribute="centerY" secondItem="vD2-vF-VXw" secondAttribute="centerY" id="kec-aw-ZGz"/>
                         </constraints>
@@ -167,14 +174,14 @@
                         <outlet property="countryNameLabel" destination="yOQ-xL-UKq" id="W4i-tK-nDr"/>
                         <outlet property="currencyLabel" destination="m72-d2-6HW" id="e52-HT-XOf"/>
                         <outlet property="flagImageView" destination="vD2-vF-VXw" id="fcS-dC-m5a"/>
-                        <outlet property="labelsStackView" destination="0xg-CN-QUJ" id="gSb-Oa-ydD"/>
+                        <outlet property="infoStackView" destination="0xg-CN-QUJ" id="gSb-Oa-ydD"/>
+                        <outlet property="numberOfRegionsLabel" destination="raI-wf-xuW" id="UsL-WK-QU2"/>
                         <outlet property="phoneCode" destination="fNj-kc-hVI" id="LtX-xY-4bn"/>
-                        <outlet property="qtyOfRegionsLabel" destination="raI-wf-xuW" id="UsL-WK-QU2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jnv-lU-Xl1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1473" y="-85"/>
+            <point key="canvasLocation" x="1471.0144927536232" y="-85.714285714285708"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="p1T-ET-BES">
@@ -182,7 +189,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Phn-Qs-3Jd" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="LuB-nS-fSk">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <rect key="frame" x="0.0" y="48" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -196,6 +203,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="GoGeo_2" width="1638" height="3542"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

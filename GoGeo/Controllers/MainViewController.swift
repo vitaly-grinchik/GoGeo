@@ -109,7 +109,6 @@ extension MainViewController {
 
 // MARK: - Search results updating
 extension MainViewController: UISearchResultsUpdating {
-    
     // Update filter on text change in search bar
     func updateSearchResults(for searchController: UISearchController) {
         guard let searchText = searchController.searchBar.text else { return }

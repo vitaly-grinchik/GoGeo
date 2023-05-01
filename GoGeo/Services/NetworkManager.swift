@@ -28,11 +28,6 @@ enum RapidApi: String {
     case city = "/v1/geo/cities"
 }
 
-enum WikiApi: String {
-    case host = "https://commons.wikimedia.org"
-    case endpoint = "/w/api.php"
-}
-
 enum NetError: String, Error {
     case invalidData = "Invalid data"
     case invalidUrl = "Invalid URL"
@@ -45,7 +40,7 @@ class NetworkManager {
     static let shared = NetworkManager()
     
     // RapidAPI Key
-    static let rapidHeaders = [
+    let rapidHeaders = [
         "X-RapidAPI-Host": "wft-geo-db.p.rapidapi.com",
         "X-RapidAPI-Key": "3d736771d3msh14a3562b22f1641p1af6f7jsn1b7fcb2fc09b"
     ]
@@ -69,9 +64,7 @@ class NetworkManager {
         }
     }
     
-    // Data fetch
     func fetchData<T: Decodable>(_ type: T.Type, using request: URLRequest, completion: @escaping (Result<T, NetError>) -> Void) {
-        // Instantiate session
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let _ = error {
                 if let serverResponse = response as? HTTPURLResponse {

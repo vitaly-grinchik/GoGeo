@@ -1,0 +1,39 @@
+
+/* Class = "UILabel"; text = "capital:"; ObjectID = "5IX-Wf-GXO"; */
+"5IX-Wf-GXO.text" = "capital:";
+
+/* Class = "UINavigationItem"; title = "Root View Controller"; ObjectID = "9Cn-aR-qTv"; */
+"9Cn-aR-qTv.title" = "Root View Controller";
+
+/* Class = "UILabel"; text = "capital"; ObjectID = "MeP-hL-EME"; */
+"MeP-hL-EME.text" = "capital";
+
+/* Class = "UILabel"; text = "regions q-ty:"; ObjectID = "PUb-fu-FB9"; */
+"PUb-fu-FB9.text" = "regions q-ty:";
+
+/* Class = "UILabel"; text = "phone code:"; ObjectID = "WYf-4n-oWC"; */
+"WYf-4n-oWC.text" = "phone code:";
+
+/* Class = "UILabel"; text = "currency:"; ObjectID = "YHb-mx-pdL"; */
+"YHb-mx-pdL.text" = "currency:";
+
+/* Class = "UILabel"; text = "code:"; ObjectID = "dvH-MR-B3M"; */
+"dvH-MR-B3M.text" = "code:";
+
+/* Class = "UILabel"; text = "+xxx"; ObjectID = "fNj-kc-hVI"; */
+"fNj-kc-hVI.text" = "+xxx";
+
+/* Class = "UILabel"; text = "code"; ObjectID = "hcd-RT-wxg"; */
+"hcd-RT-wxg.text" = "code";
+
+/* Class = "UILabel"; text = "currency"; ObjectID = "m72-d2-6HW"; */
+"m72-d2-6HW.text" = "currency";
+
+/* Class = "UILabel"; text = "noOfRegions"; ObjectID = "raI-wf-xuW"; */
+"raI-wf-xuW.text" = "noOfRegions";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "rlV-Mo-rPR"; */
+"rlV-Mo-rPR.text" = "Title";
+
+/* Class = "UILabel"; text = "Country Name"; ObjectID = "yOQ-xL-UKq"; */
+"yOQ-xL-UKq.text" = "Country Name";

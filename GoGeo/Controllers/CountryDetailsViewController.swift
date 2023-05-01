@@ -6,16 +6,16 @@
 //
 
 import UIKit
-import SwiftDraw
+import SwiftDraw // for SVG image files
 
 final class CountryDetailsViewController: UIViewController {
 
     // MARK: - IB Outlets
-    @IBOutlet var labelsStackView: UIStackView!
+    @IBOutlet var infoStackView: UIStackView!
     
     @IBOutlet var countryNameLabel: UILabel!
     @IBOutlet var codeLabel: UILabel!
-    @IBOutlet var qtyOfRegionsLabel: UILabel!
+    @IBOutlet var numberOfRegionsLabel: UILabel!
     @IBOutlet var phoneCode: UILabel!
     @IBOutlet var capitalLabel: UILabel!
     @IBOutlet var currencyLabel: UILabel!
@@ -35,7 +35,7 @@ final class CountryDetailsViewController: UIViewController {
         capitalLabel.isUserInteractionEnabled = true
         
         flagImageView.alpha = 0
-        labelsStackView.alpha = 0
+        infoStackView.alpha = 0
         
         activityIndicator.hidesWhenStopped = true
         activityIndicator.startAnimating()
@@ -47,6 +47,7 @@ final class CountryDetailsViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
         // Chain of requests:
         //  First request: get country ID for selected country
         //  Delay for 1.3 sec to observe API free use terms (request per second or rarely)
@@ -79,7 +80,7 @@ final class CountryDetailsViewController: UIViewController {
         // Flag appearance animation
         UIView.animate(withDuration: 0.6) { [weak self] in
             self?.flagImageView.alpha = 1
-            self?.labelsStackView.alpha = 1
+            self?.infoStackView.alpha = 1
         }
     }
     
@@ -89,7 +90,7 @@ final class CountryDetailsViewController: UIViewController {
         phoneCode.text = countryDetails?.callingCode ?? ""
         
         if let numberOfRegions = countryDetails?.numRegions {
-            qtyOfRegionsLabel.text = "\(numberOfRegions)"
+            numberOfRegionsLabel.text = "\(numberOfRegions)"
         }
         
         currencyLabel.text = countryDetails?.currencyCodes.joined(separator: ", ")
@@ -108,6 +109,7 @@ final class CountryDetailsViewController: UIViewController {
                 } else if let flagImage = UIImage(data: imageData) {
                     completion(.success(flagImage))
                 } else {
+                    // .. or placeholder system image
                     if let flagImage = UIImage(systemName: "image") {
                         completion(.success(flagImage))
                     }
@@ -131,7 +133,7 @@ final class CountryDetailsViewController: UIViewController {
         }
         
         var request = URLRequest(url: url)
-        request.allHTTPHeaderFields = NetworkManager.rapidHeaders
+        request.allHTTPHeaderFields = NetworkManager.shared.rapidHeaders
         
         NetworkManager.shared.fetchData(CountrySearch.self, using: request) { result in
             switch result {
@@ -158,7 +160,7 @@ final class CountryDetailsViewController: UIViewController {
         }
         
         var request = URLRequest(url: url)
-        request.allHTTPHeaderFields = NetworkManager.rapidHeaders
+        request.allHTTPHeaderFields = NetworkManager.shared.rapidHeaders
         
         NetworkManager.shared.fetchData(CountryWithId.self, using: request) { result in
             switch result {

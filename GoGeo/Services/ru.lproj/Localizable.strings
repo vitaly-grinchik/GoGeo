@@ -205,9 +205,14 @@
 "Zambia" = "Замбия";
 "Zimbabwe" = "Зимбабве";
 
-"Items found: %ld" = "Найдено: %ld";
+"Found: %ld" = "Найдено: %ld";
 "NoItemsFoundTitle" = "Ничего не найдено";
 "Find a country" = "Найти страну";
 
 "Countries" = "Страны";
 
+"code" = "код";
+"capital" = "столица";
+"phone code" = "телефонный код";
+"regions q-ty" = "регионов";
+"currency" = "код валюты";
