@@ -7,11 +7,30 @@
 
 import Foundation
 
-enum List: String {
-    case countrySearchUrl = "https://wft-geo-db.p.rapidapi.com/v1/geo/countries?namePrefix="
-    case countryDetailsSearchUrl = "https://wft-geo-db.p.rapidapi.com/v1/geo/countries/"
-    case citySearchUrl = "https://wft-geo-db.p.rapidapi.com/v1/geo/cities?namePrefix="
-    case cityDetailsSearchUrl = "https://wft-geo-db.p.rapidapi.com/v1/geo/cities/"
+struct Resource {
+    let host: String
+    let endpoint: String
+    let query: [URLQueryItem]?
+    
+    var url: URL? {
+        if var components = URLComponents(string: host) {
+            components.path = endpoint
+            components.queryItems = query
+            if let url = components.url { return url }
+        }
+        return nil
+    }
+}
+
+enum RapidApi: String {
+    case host = "https://wft-geo-db.p.rapidapi.com"
+    case country = "/v1/geo/countries"
+    case city = "/v1/geo/cities"
+}
+
+enum WikiApi: String {
+    case host = "https://commons.wikimedia.org"
+    case endpoint = "/w/api.php"
 }
 
 enum NetError: String, Error {
@@ -33,7 +52,7 @@ class NetworkManager {
     
     private init() {}
     
-    private func fetchImageData(from url: String, completion: @escaping (Result<Data, NetError>) -> Void) {
+    func fetchImageData(from url: String, completion: @escaping (Result<Data, NetError>) -> Void) {
         guard let url = URL(string: url) else {
             completion(.failure(.invalidUrl))
             return
@@ -71,11 +90,12 @@ class NetworkManager {
             }
 
             if let data = try? JSONDecoder().decode(type, from: data) {
-                completion(.success(data))
+                DispatchQueue.main.async {
+                    completion(.success(data))
+                }
             } else {
                 completion(.failure(.decodeError))
             }
-            
         }.resume()
     }
     

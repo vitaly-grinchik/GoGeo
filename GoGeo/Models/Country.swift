@@ -5,17 +5,21 @@
 //  Created by Виталий Гринчик on 14.03.23.
 //
 
+// GET Countries
 // Minimal country info
-struct CountryResponse: Decodable {
-    let data: [Country]
+struct CountrySearch: Decodable {
+    let data: [CountryBrief]
 }
 
-struct Country: Decodable {
+struct CountryBrief: Decodable {
+    let code: String
+    let currencyCodes: [String]
     let name: String
     let wikiDataId: String
 }
 
-struct CountryInfo: Decodable {
+// GET Country Details request using country ID
+struct CountryWithId: Decodable {
     let data: CountryDetails
 }
 

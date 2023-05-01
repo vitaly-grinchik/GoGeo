@@ -8,7 +8,7 @@
 // Find cities, filtering by optional criteria. If no criteria are set, you will get back all known cities.
 
 struct CityResponse: Decodable {
-    let data: [Country]
+    let data: [City]
 }
 
 struct City: Decodable {

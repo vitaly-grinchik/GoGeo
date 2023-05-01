@@ -6,93 +6,140 @@
 //
 
 import UIKit
+import SwiftDraw
 
 final class CountryDetailsViewController: UIViewController {
 
     @IBOutlet var countryNameLabel: UILabel!
-    @IBOutlet var wikiIDLabel: UILabel!
     
     @IBOutlet var flagImageView: UIImageView!
     
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
     
-    var countryName = ""
-    var countryInfo: CountryInfo?
+    var countryName: String!
+    var countryDetails: CountryDetails?
     var flagImage: UIImage?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         countryNameLabel.text = countryName
-        wikiIDLabel.text = ""
+        flagImageView.alpha = 0
         
         activityIndicator.hidesWhenStopped = true
         activityIndicator.startAnimating()
+    }
+    
+    override func viewWillLayoutSubviews() {
+        activityIndicator.style = .large
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
         // Chain of requests:
         //  First request: get country ID for selected country
-        //      Delay for 1.3 sec to observe API free use terms
+        //  Delay for 1.3 sec to observe API free use terms (request per second or rarely)
         //  Second request: get detailed info on country using its ID
         //  Third request: get country flag image data
         getIdForCountry(countryName) { [weak self] id in
             Timer.scheduledTimer(withTimeInterval: 1.3, repeats: false) { _ in
-                self?.getInfoOnCountryWithId(id) { countryInfo in
-                    self?.countryInfo = countryInfo
-                    self?.getFlagImg { self?.updateUI() }
+                self?.getInfoOnCountryWithId(id) { country in
+                    self?.countryDetails = country
+                    
+                    self?.downloadFlagImage() { result in
+                        switch result {
+                        case .success(let image): self?.flagImage = image
+                        case .failure(let error): print(error.rawValue)
+                        }
+                        
+                        self?.updateUI()
+                    }
                 }
             }
         }
-        
     }
     
     private func updateUI() {
+        flagImageView.image = flagImage
         activityIndicator.stopAnimating()
-        wikiIDLabel.text = countryInfo?.data.wikiDataId
-        // TODO
-    }
-    
-    private func getFlagImg(compleation: @escaping ()-> Void) {
-        guard let url = countryInfo?.data.flagImageUri else { return }
-        NetworkManager.shared.fetchImage(from: url) { [weak self] result in
-            switch result {
-            case .success(let imageData):
-                guard let image = UIImage(data: imageData) else { return }
-                DispatchQueue.main.async {
-                    self?.flagImageView.image = image
-                }
-            case .failure(_):
-                print("Load image error")
-            }
-            compleation()
+        
+        // Flag appearance animation
+        UIView.animate(withDuration: 0.5) { [weak self] in
+            self?.flagImageView.alpha = 1
         }
     }
     
-    private func getIdForCountry(_ country: String, completion: @escaping (String) -> Void) {
+    private func downloadFlagImage(completion: @escaping (Result<UIImage, NetError>) -> Void) {
+        guard let flagImageUrl = countryDetails?.flagImageUri else { return }
         
-        let countryNamePrefix = country.split(separator: " ").first
-        let url = "\(List.countrySearchUrl.rawValue)\(countryNamePrefix ?? "")"
+        NetworkManager.shared.fetchImageData(from: flagImageUrl) { result in
+            switch result {
+            case .success(let imageData):
+                // Check if image is .svg
+                if let flagIage = UIImage(svgData: imageData) {
+                    completion(.success(flagIage))
+                // Check if other image format
+                } else if let flagImage = UIImage(data: imageData) {
+                    completion(.success(flagImage))
+                } else {
+                    if let flagImage = UIImage(systemName: "image") {
+                        completion(.success(flagImage))
+                    }
+                }
+            case .failure(let error): print(error.rawValue)
+            }
+        }
+    }
+    
+    private func getIdForCountry(_ name: String, completion: @escaping (String) -> Void) {
         
-        NetworkManager.shared.fetch(CountryResponse.self, from: url) { result in
+        let query = [URLQueryItem(name: "namePrefix", value: name)]
+        
+        guard let url = Resource(
+            host: RapidApi.host.rawValue,
+            endpoint: RapidApi.country.rawValue,
+            query: query
+        ).url else {
+            print("Wrong URL")
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.allHTTPHeaderFields = NetworkManager.rapidHeaders
+        
+        NetworkManager.shared.fetchData(CountrySearch.self, using: request) { result in
             switch result {
             case .success(let country):
                 let id = country.data.first?.wikiDataId ?? ""
                 completion(id)
             case .failure(let error):
-                print(error.localizedDescription)
+                print("Country ID not found\n\(error.rawValue)")
             }
         }
     }
     
-    private func getInfoOnCountryWithId(_ countryId: String, completion: @escaping (CountryInfo) -> Void) {
+    private func getInfoOnCountryWithId(_ countryId: String, completion: @escaping (CountryDetails) -> Void) {
         
-        let url = "\(List.countryDetailsSearchUrl.rawValue)\(countryId)"
+        guard let url = Resource(
+            host: RapidApi.host.rawValue,
+            endpoint: RapidApi.country.rawValue,
+            query: nil
+        ).url?.appending(component: countryId)
         
-        NetworkManager.shared.fetch(CountryInfo.self, from: url) { result in
+        else {
+            print("Wrong URL")
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.allHTTPHeaderFields = NetworkManager.rapidHeaders
+        
+        NetworkManager.shared.fetchData(CountryWithId.self, using: request) { result in
             switch result {
-            case .success(let countryInfo):
-                completion(countryInfo)
+            case .success(let country): completion(country.data)
             case .failure(let error):
-                print(error.localizedDescription)
+                print("Info on country with ID: \(countryId) not found\n\(error.rawValue)")
             }
         }
     }
