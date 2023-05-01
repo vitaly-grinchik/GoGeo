@@ -10,7 +10,15 @@ import SwiftDraw
 
 final class CountryDetailsViewController: UIViewController {
 
+    // MARK: - IB Outlets
+    @IBOutlet var labelsStackView: UIStackView!
+    
     @IBOutlet var countryNameLabel: UILabel!
+    @IBOutlet var codeLabel: UILabel!
+    @IBOutlet var qtyOfRegionsLabel: UILabel!
+    @IBOutlet var phoneCode: UILabel!
+    @IBOutlet var capitalLabel: UILabel!
+    @IBOutlet var currencyLabel: UILabel!
     
     @IBOutlet var flagImageView: UIImageView!
     
@@ -24,7 +32,10 @@ final class CountryDetailsViewController: UIViewController {
         super.viewDidLoad()
         
         countryNameLabel.text = countryName
+        capitalLabel.isUserInteractionEnabled = true
+        
         flagImageView.alpha = 0
+        labelsStackView.alpha = 0
         
         activityIndicator.hidesWhenStopped = true
         activityIndicator.startAnimating()
@@ -36,7 +47,6 @@ final class CountryDetailsViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
         // Chain of requests:
         //  First request: get country ID for selected country
         //  Delay for 1.3 sec to observe API free use terms (request per second or rarely)
@@ -52,8 +62,8 @@ final class CountryDetailsViewController: UIViewController {
                         case .success(let image): self?.flagImage = image
                         case .failure(let error): print(error.rawValue)
                         }
-                        
                         self?.updateUI()
+                        self?.updateLabels()
                     }
                 }
             }
@@ -61,13 +71,28 @@ final class CountryDetailsViewController: UIViewController {
     }
     
     private func updateUI() {
+        updateLabels()
+        
         flagImageView.image = flagImage
         activityIndicator.stopAnimating()
         
         // Flag appearance animation
-        UIView.animate(withDuration: 0.5) { [weak self] in
+        UIView.animate(withDuration: 0.6) { [weak self] in
             self?.flagImageView.alpha = 1
+            self?.labelsStackView.alpha = 1
         }
+    }
+    
+    private func updateLabels() {
+        codeLabel.text = countryDetails?.code ?? ""
+        capitalLabel.text = countryDetails?.capital ?? ""
+        phoneCode.text = countryDetails?.callingCode ?? ""
+        
+        if let numberOfRegions = countryDetails?.numRegions {
+            qtyOfRegionsLabel.text = "\(numberOfRegions)"
+        }
+        
+        currencyLabel.text = countryDetails?.currencyCodes.joined(separator: ", ")
     }
     
     private func downloadFlagImage(completion: @escaping (Result<UIImage, NetError>) -> Void) {
