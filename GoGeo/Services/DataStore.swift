@@ -230,7 +230,7 @@ final class DataStore {
     }
     
     // Get a list of first letters of all groups
-    func getTitlesForGroups() -> [String] {
+    func getTitles() -> [String] {
         let groups = getGroups()
         var titles = [String]()
         groups.forEach { element in

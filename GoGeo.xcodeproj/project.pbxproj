@@ -18,6 +18,7 @@
 		D880F26429C0AF6B007DE2F6 /* Country.swift in Sources */ = {isa = PBXBuildFile; fileRef = D880F26329C0AF6B007DE2F6 /* Country.swift */; };
 		D880F26629C0B5CE007DE2F6 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D880F26529C0B5CE007DE2F6 /* NetworkManager.swift */; };
 		D892F8B829FA8A2F0004972E /* SwiftDraw in Frameworks */ = {isa = PBXBuildFile; productRef = D892F8B729FA8A2F0004972E /* SwiftDraw */; };
+		D892F8F12A0568A90004972E /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = D892F8F02A0568A90004972E /* Alamofire */; };
 		D8ACCB7F29D5D74D005F8495 /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8ACCB7E29D5D74D005F8495 /* DataStore.swift */; };
 /* End PBXBuildFile section */
 
@@ -44,6 +45,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D892F8B829FA8A2F0004972E /* SwiftDraw in Frameworks */,
+				D892F8F12A0568A90004972E /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -143,6 +145,7 @@
 			name = GoGeo;
 			packageProductDependencies = (
 				D892F8B729FA8A2F0004972E /* SwiftDraw */,
+				D892F8F02A0568A90004972E /* Alamofire */,
 			);
 			productName = GoGeo;
 			productReference = D880F23F29BF8A74007DE2F6 /* GoGeo.app */;
@@ -175,6 +178,7 @@
 			mainGroup = D880F23629BF8A74007DE2F6;
 			packageReferences = (
 				D892F8B629FA8A2F0004972E /* XCRemoteSwiftPackageReference "SwiftDraw" */,
+				D892F8EF2A0568A80004972E /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			productRefGroup = D880F24029BF8A74007DE2F6 /* Products */;
 			projectDirPath = "";
@@ -447,6 +451,14 @@
 				kind = branch;
 			};
 		};
+		D892F8EF2A0568A80004972E /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -454,6 +466,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = D892F8B629FA8A2F0004972E /* XCRemoteSwiftPackageReference "SwiftDraw" */;
 			productName = SwiftDraw;
+		};
+		D892F8F02A0568A90004972E /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D892F8EF2A0568A80004972E /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

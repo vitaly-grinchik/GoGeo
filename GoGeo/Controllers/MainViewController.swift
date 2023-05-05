@@ -13,7 +13,7 @@ final class MainViewController: UITableViewController {
     
     private var filteredCountries = [String]()
     
-    private let titles = DataStore.shared.getTitlesForGroups()
+    private let titles = DataStore.shared.getTitles()
     
     private let groupsOfCountries = DataStore.shared.getGroups()
     
