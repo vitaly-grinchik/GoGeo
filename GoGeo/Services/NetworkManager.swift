@@ -65,6 +65,17 @@ class NetworkManager {
         }
     }
     
+    func fetchAFData(from url: String, completion: @escaping (Result<Data, AFError>) -> Void) {
+        AF.request(url)
+            .validate()
+            .responseData { response in
+                switch response.result {
+                case .success(let data): completion(.success(data))
+                case .failure(let error): completion(.failure(error))
+                }
+            }
+    }
+    
     func fetchData<T: Decodable>(_ type: T.Type, using request: URLRequest, completion: @escaping (Result<T, NetError>) -> Void) {
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let _ = error {
@@ -82,7 +93,7 @@ class NetworkManager {
                 completion(.failure(.invalidData))
                 return
             }
-
+            
             if let data = try? JSONDecoder().decode(type, from: data) {
                 DispatchQueue.main.async {
                     completion(.success(data))
@@ -93,15 +104,22 @@ class NetworkManager {
         }.resume()
     }
     
-    func fetchAFImageData(from url: String, completion: @escaping (Result<Data, NetError>) -> Void) {
-        AF.request(url)
+    func fetchAFJSON(using request: URLRequest, compleation: @escaping (Result<Data, AFError>) -> Void) {
+//        guard let url = request.url else {
+//            compleation(.failure(.invalidUrl))
+//            return
+//        }
+//
+        AF.request(request)
             .validate()
-            .responseData { response in
+            .responseJSON { response in
                 switch response.result {
-                case .success(let data): completion(.success(data))
-                case .failure(_): completion(.failure(.noImageData))
+                case .success(let data):
+                    {}
+                case .failure(let error):
+                    compleation(.failure(error))
                 }
             }
     }
-    
+
 }

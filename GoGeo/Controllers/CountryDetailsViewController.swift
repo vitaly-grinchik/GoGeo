@@ -32,7 +32,8 @@ final class CountryDetailsViewController: UIViewController {
         super.viewDidLoad()
         
         countryNameLabel.text = countryName
-        capitalLabel.isUserInteractionEnabled = true
+        // TODO: - Add link to map
+//        capitalLabel.isUserInteractionEnabled = true
         
         flagImageView.alpha = 0
         infoStackView.alpha = 0
@@ -99,12 +100,12 @@ final class CountryDetailsViewController: UIViewController {
     private func downloadFlagImage(completion: @escaping (Result<UIImage, NetError>) -> Void) {
         guard let flagImageUrl = countryDetails?.flagImageUri else { return }
         
-        NetworkManager.shared.fetchAFImageData(from: flagImageUrl) { result in
-            switch result {
+        NetworkManager.shared.fetchAFData(from: flagImageUrl) { data in
+            switch data {
             case .success(let imageData):
                 // Check if image is .svg
-                if let flagIage = UIImage(svgData: imageData) {
-                    completion(.success(flagIage))
+                if let flagImage = UIImage(svgData: imageData) {
+                    completion(.success(flagImage))
                 // Check if other image format
                 } else if let flagImage = UIImage(data: imageData) {
                     completion(.success(flagImage))
@@ -114,7 +115,7 @@ final class CountryDetailsViewController: UIViewController {
                         completion(.success(flagImage))
                     }
                 }
-            case .failure(let error): print(error.rawValue)
+            case .failure(let error): print(error.localizedDescription)
             }
         }
     }
