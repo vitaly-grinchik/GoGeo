@@ -93,4 +93,15 @@ class NetworkManager {
         }.resume()
     }
     
+    func fetchAFImageData(from url: String, completion: @escaping (Result<Data, NetError>) -> Void) {
+        AF.request(url)
+            .validate()
+            .responseData { response in
+                switch response.result {
+                case .success(let data): completion(.success(data))
+                case .failure(_): completion(.failure(.noImageData))
+                }
+            }
+    }
+    
 }
