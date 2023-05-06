@@ -99,7 +99,7 @@ final class CountryDetailsViewController: UIViewController {
     private func downloadFlagImage(completion: @escaping (Result<UIImage, NetError>) -> Void) {
         guard let flagImageUrl = countryDetails?.flagImageUri else { return }
         
-        NetworkManager.shared.fetchImageData(from: flagImageUrl) { result in
+        NetworkManager.shared.fetchAFImageData(from: flagImageUrl) { result in
             switch result {
             case .success(let imageData):
                 // Check if image is .svg
