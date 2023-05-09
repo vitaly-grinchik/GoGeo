@@ -23,6 +23,13 @@ struct Resource {
     }
 }
 
+enum DataModel {
+    case countrySearch
+    case countryBrief
+    case countryDetails
+    case countryWithId
+}
+
 enum RapidApi: String {
     case host = "https://wft-geo-db.p.rapidapi.com"
     case country = "/v1/geo/countries"
@@ -35,6 +42,7 @@ enum NetError: String, Error {
     case requestFailed = "Request failed"
     case decodeError = "JSON decoding error"
     case noImageData = "No umage data found"
+    case jsonIncompatible = "JSON incompatibility err0r"
 }
 
 class NetworkManager {
@@ -104,20 +112,36 @@ class NetworkManager {
         }.resume()
     }
     
-    func fetchAFJSON(using request: URLRequest, compleation: @escaping (Result<Data, AFError>) -> Void) {
-//        guard let url = request.url else {
-//            compleation(.failure(.invalidUrl))
-//            return
-//        }
-//
+    func fetchCountries(using request: URLRequest, compleation: @escaping (Result<CountrySearch, NetError>) -> Void) {
+        
+        // Key name for data in Model
+        let dataKey = "data"
+        
         AF.request(request)
             .validate()
             .responseJSON { response in
                 switch response.result {
                 case .success(let data):
-                    {}
-                case .failure(let error):
-                    compleation(.failure(error))
+                    // Check for JSON complatability to model
+                    guard let searchResult = data as? [String: [[String: Any]]] else {
+                        compleation(.failure(.jsonIncompatible))
+                        return
+                    }
+                    // Check for needed key in JSON response
+                    guard searchResult.keys.contains(dataKey) else {
+                        compleation(.failure(.decodeError))
+                        return
+                    }
+                    
+                    guard let countriesData = searchResult[dataKey] else { return }
+                    
+                    let countries = CountrySearch(data: countriesData)
+                    compleation(.success(countries))
+                    
+                    
+                case .failure(_):
+                    print(NetError.invalidData.rawValue)
+                    compleation(.failure(.invalidData))
                 }
             }
     }
