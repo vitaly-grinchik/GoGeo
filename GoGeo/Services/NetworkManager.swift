@@ -122,22 +122,29 @@ class NetworkManager {
             .responseJSON { response in
                 switch response.result {
                 case .success(let data):
-                    // Check for JSON complatability to model
-                    guard let searchResult = data as? [String: [[String: Any]]] else {
+                    // Check for global JSON complatability
+                    guard let searchResult = data as? [String: Any] else {
                         compleation(.failure(.jsonIncompatible))
                         return
                     }
-                    // Check for needed key in JSON response
+                    // Check for presence of needed key in JSON response
                     guard searchResult.keys.contains(dataKey) else {
                         compleation(.failure(.decodeError))
                         return
                     }
+                    // Get values for needed key
+                    guard let values = searchResult[dataKey] else { return }
                     
-                    guard let countriesData = searchResult[dataKey] else { return }
+                    // Check if data value is an array type in accordance with the model
+                    guard let countriesData = values as? [[String: Any]] else {
+                        compleation(.failure(.jsonIncompatible))
+                        return
+                    }
                     
+                    // Parse values
                     let countries = CountrySearch(data: countriesData)
                     compleation(.success(countries))
-                    
+                    return
                     
                 case .failure(_):
                     print(NetError.invalidData.rawValue)

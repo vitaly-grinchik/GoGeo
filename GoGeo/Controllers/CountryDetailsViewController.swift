@@ -136,7 +136,17 @@ final class CountryDetailsViewController: UIViewController {
         var request = URLRequest(url: url)
         request.allHTTPHeaderFields = NetworkManager.shared.rapidHeaders
         
-        NetworkManager.shared.fetchData(CountrySearch.self, using: request) { result in
+//        NetworkManager.shared.fetchData(CountrySearch.self, using: request) { result in
+//            switch result {
+//            case .success(let country):
+//                let id = country.data.first?.wikiDataId ?? ""
+//                completion(id)
+//            case .failure(let error):
+//                print("Country ID not found\n\(error.rawValue)")
+//            }
+//        }
+        
+        NetworkManager.shared.fetchCountries(using: request) { result in
             switch result {
             case .success(let country):
                 let id = country.data.first?.wikiDataId ?? ""
