@@ -25,9 +25,7 @@ struct Resource {
 
 enum DataModel {
     case countrySearch
-    case countryBrief
     case countryDetails
-    case countryWithId
 }
 
 enum RapidApi: String {
@@ -42,7 +40,7 @@ enum NetError: String, Error {
     case requestFailed = "Request failed"
     case decodeError = "JSON decoding error"
     case noImageData = "No umage data found"
-    case jsonIncompatible = "JSON incompatibility err0r"
+    case jsonIncompatible = "JSON incompatibility error"
 }
 
 class NetworkManager {
@@ -112,7 +110,7 @@ class NetworkManager {
         }.resume()
     }
     
-    func fetchCountries(using request: URLRequest, compleation: @escaping (Result<CountrySearch, NetError>) -> Void) {
+    func searchCountries(using request: URLRequest, compleation: @escaping (Result<CountrySearch, NetError>) -> Void) {
         
         // Key name for data in Model
         let dataKey = "data"
@@ -121,29 +119,27 @@ class NetworkManager {
             .validate()
             .responseJSON { response in
                 switch response.result {
-                case .success(let data):
+                case .success(let responseData):
                     // Check for global JSON complatability
-                    guard let searchResult = data as? [String: Any] else {
+                    guard let jsonData = responseData as? [String: Any] else {
                         compleation(.failure(.jsonIncompatible))
                         return
                     }
                     // Check for presence of needed key in JSON response
-                    guard searchResult.keys.contains(dataKey) else {
-                        compleation(.failure(.decodeError))
+                    guard jsonData.keys.contains(dataKey) else {
+                        compleation(.failure(.invalidData))
                         return
                     }
-                    // Get values for needed key
-                    guard let values = searchResult[dataKey] else { return }
                     
-                    // Check if data value is an array type in accordance with the model
-                    guard let countriesData = values as? [[String: Any]] else {
-                        compleation(.failure(.jsonIncompatible))
+                    // Check if data is compatible with the CountrySearch model
+                    guard let data = jsonData[dataKey] as? [[String: Any]] else {
+                        compleation(.failure(.invalidData))
                         return
                     }
                     
                     // Parse values
-                    let countries = CountrySearch(data: countriesData)
-                    compleation(.success(countries))
+                    let countrySearch = CountrySearch(data: data)
+                    compleation(.success(countrySearch))
                     return
                     
                 case .failure(_):
@@ -153,4 +149,62 @@ class NetworkManager {
             }
     }
 
+    func fetchData<T: Decodable>(for model: DataModel,
+                                 using request: URLRequest,
+                                 compleation: @escaping (Result<T, NetError>) -> Void) {
+        // Key name for data in Model
+        let dataKey = "data"
+        
+        AF.request(request)
+            .validate()
+            .responseJSON { response in
+                switch response.result {
+                case .success(let responseData):
+                    // Check if data are JSON format compatible
+                    guard let jsonData = responseData as? [String: Any] else {
+                        compleation(.failure(.jsonIncompatible))
+                        return
+                    }
+                    // Check for presence of needed key in JSON response
+                    guard jsonData.keys.contains(dataKey) else {
+                        compleation(.failure(.invalidData))
+                        return
+                    }
+                    
+                    switch model {
+                    case .countrySearch:
+                        // Check if data conforms to CountrySearch model
+                        guard let data = jsonData[dataKey] as? [[String: Any]] else {
+                            compleation(.failure(.invalidData))
+                            return
+                        }
+                        // Parse values
+                        guard let countrySearch = CountrySearch(data: data) as? T else {
+                            compleation(.failure(.invalidData))
+                            return
+                        }
+                        compleation(.success(countrySearch))
+                        return
+                        
+                    case .countryDetails:
+                        // Check if data conforms to CountryDetails model
+                        guard let data = jsonData[dataKey] as? [String: Any] else {
+                            compleation(.failure(.invalidData))
+                            return
+                        }
+                        // Parse values
+                        guard let countryDetails = CountryDetails(data: data) as? T else {
+                            compleation(.failure(.decodeError))
+                            return
+                        }
+                        compleation(.success(countryDetails))
+                        return
+                    }
+                    
+                case .failure(_):
+                    print(NetError.invalidData.rawValue)
+                    compleation(.failure(.invalidData))
+                }
+            }
+    }
 }

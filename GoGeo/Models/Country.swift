@@ -12,8 +12,8 @@ struct CountrySearch: Decodable {
     init(data: [[String: Any]]) {
         var countries = [CountryBrief]()
         
-        data.forEach { keyValue in
-            let country = CountryBrief(data: keyValue)
+        data.forEach { data in
+            let country = CountryBrief(data: data)
             countries.append(country)
         }
         
@@ -22,16 +22,16 @@ struct CountrySearch: Decodable {
 }
 
 struct CountryBrief: Decodable {
-    let code: String?
-    let currencyCodes: [String]?
-    let name: String?
-    let wikiDataId: String?
+    let code: String
+    let currencyCodes: [String]
+    let name: String
+    let wikiDataId: String
     
     init(data: [String: Any]) {
-        code = data["code"] as? String
-        currencyCodes = data["currencyCodes"] as? [String]
-        name = data["name"] as? String
-        wikiDataId = data["wikiDataId"] as? String
+        code = data["code"] as? String ?? "-"
+        currencyCodes = data["currencyCodes"] as? [String] ?? ["-"]
+        name = data["name"] as? String ?? "-"
+        wikiDataId = data["wikiDataId"] as? String ?? "-"
     }
 }
 
@@ -50,5 +50,16 @@ struct CountryDetails: Decodable {
     let name: String
     let numRegions: Int
     let wikiDataId: String
+    
+    init(data: [String: Any]) {
+        capital = data["capital"] as? String ?? "-"
+        code = data["code"] as? String ?? "-"
+        callingCode = data["callingCode"] as? String ?? "-"
+        currencyCodes = data["currencyCodes"] as? [String] ?? ["-"]
+        flagImageUri = data["flagImageUri"] as? String ?? "-"
+        name = data["name"] as? String ?? "-"
+        numRegions = data["numRegions"] as? Int ?? 0
+        wikiDataId = data["wikiDataId"] as? String ?? "-"
+    }
 }
 

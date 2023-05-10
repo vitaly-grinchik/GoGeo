@@ -32,8 +32,6 @@ final class CountryDetailsViewController: UIViewController {
         super.viewDidLoad()
         
         countryNameLabel.text = countryName
-        // TODO: - Add link to map
-//        capitalLabel.isUserInteractionEnabled = true
         
         flagImageView.alpha = 0
         infoStackView.alpha = 0
@@ -78,7 +76,7 @@ final class CountryDetailsViewController: UIViewController {
         flagImageView.image = flagImage
         activityIndicator.stopAnimating()
         
-        // Flag appearance animation
+        // Info appearance animation
         UIView.animate(withDuration: 0.6) { [weak self] in
             self?.flagImageView.alpha = 1
             self?.infoStackView.alpha = 1
@@ -136,17 +134,8 @@ final class CountryDetailsViewController: UIViewController {
         var request = URLRequest(url: url)
         request.allHTTPHeaderFields = NetworkManager.shared.rapidHeaders
         
-//        NetworkManager.shared.fetchData(CountrySearch.self, using: request) { result in
-//            switch result {
-//            case .success(let country):
-//                let id = country.data.first?.wikiDataId ?? ""
-//                completion(id)
-//            case .failure(let error):
-//                print("Country ID not found\n\(error.rawValue)")
-//            }
-//        }
-        
-        NetworkManager.shared.fetchCountries(using: request) { result in
+//        NetworkManager.shared.fetchData(CountrySearch.self, using: request) { result in     
+        NetworkManager.shared.searchCountries(using: request) { result in
             switch result {
             case .success(let country):
                 let id = country.data.first?.wikiDataId ?? ""
@@ -166,7 +155,7 @@ final class CountryDetailsViewController: UIViewController {
         ).url?.appending(component: countryId)
         
         else {
-            print("Wrong URL")
+            print(NetError.invalidUrl.rawValue)
             return
         }
         
