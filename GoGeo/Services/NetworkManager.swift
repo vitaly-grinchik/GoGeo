@@ -23,11 +23,6 @@ struct Resource {
     }
 }
 
-enum DataModel {
-    case countrySearch
-    case countryDetails
-}
-
 enum RapidApi: String {
     case host = "https://wft-geo-db.p.rapidapi.com"
     case country = "/v1/geo/countries"
@@ -41,6 +36,7 @@ enum NetError: String, Error {
     case decodeError = "JSON decoding error"
     case noImageData = "No umage data found"
     case jsonIncompatible = "JSON incompatibility error"
+    case jsonIncompleteData = "JSON has incomplete data"
 }
 
 class NetworkManager {
@@ -100,7 +96,7 @@ class NetworkManager {
 //    }
     
     // Alamofire networking
-    func fetchAFImageData(from url: String, completion: @escaping (Result<Data, AFError>) -> Void) {
+    func fetchAFData(from url: String, completion: @escaping (Result<Data, AFError>) -> Void) {
         AF.request(url)
             .validate()
             .responseData { response in
@@ -115,7 +111,7 @@ class NetworkManager {
                       using request: URLRequest,
                       compleation: @escaping (Result<T, NetError>) -> Void)
     {
-        // Key name for data in Model
+        // Key name for data in models
         let dataKey = "data"
         
         AF.request(request)
@@ -123,19 +119,19 @@ class NetworkManager {
             .responseJSON { response in
                 switch response.result {
                 case .success(let responseData):
-                    // Check if data are JSON format compatible
+                    // Check if data is JSON format compatible
                     guard let jsonData = responseData as? [String: Any] else {
                         compleation(.failure(.jsonIncompatible))
                         return
                     }
-                    // Check for presence of needed key in JSON response
+                    // Check for presence of needed key in JSON data
                     guard jsonData.keys.contains(dataKey) else {
-                        compleation(.failure(.invalidData))
+                        compleation(.failure(.jsonIncompleteData))
                         return
                     }
                      
+                    // Check if data conforms to CountrySearch model
                     if type == CountrySearch.self {
-                        // Check if data conforms to CountrySearch model
                         guard let data = jsonData[dataKey] as? [[String: Any]] else {
                             compleation(.failure(.invalidData))
                             return
@@ -147,8 +143,8 @@ class NetworkManager {
                         }
                         compleation(.success(countrySearch))
                         
+                    // Check if data conforms to CountryWithUd model
                     } else if type == CountryWithId.self {
-                        // Check if data conforms to CountryDetails model
                         guard let data = jsonData[dataKey] as? [String: Any] else {
                             compleation(.failure(.invalidData))
                             return
@@ -162,51 +158,11 @@ class NetworkManager {
                         
                     } else {
                         compleation(.failure(.invalidData))
-                        return
                     }
 
                 case .failure(_): compleation(.failure(.invalidData))
                 }
             }
     }
-    
-//    func searchCountries(using request: URLRequest, compleation: @escaping (Result<CountrySearch, NetError>) -> Void) {
-//        
-//        // Key name for data in Model
-//        let dataKey = "data"
-//        
-//        AF.request(request)
-//            .validate()
-//            .responseJSON { response in
-//                switch response.result {
-//                case .success(let responseData):
-//                    // Check for global JSON complatability
-//                    guard let jsonData = responseData as? [String: Any] else {
-//                        compleation(.failure(.jsonIncompatible))
-//                        return
-//                    }
-//                    // Check for presence of needed key in JSON response
-//                    guard jsonData.keys.contains(dataKey) else {
-//                        compleation(.failure(.invalidData))
-//                        return
-//                    }
-//                    
-//                    // Check if data is compatible with the CountrySearch model
-//                    guard let data = jsonData[dataKey] as? [[String: Any]] else {
-//                        compleation(.failure(.invalidData))
-//                        return
-//                    }
-//                    
-//                    // Parse values
-//                    let countrySearch = CountrySearch(data: data)
-//                    compleation(.success(countrySearch))
-//                    return
-//                    
-//                case .failure(_):
-//                    print(NetError.invalidData.rawValue)
-//                    compleation(.failure(.invalidData))
-//                }
-//            }
-//    }
 
 }
