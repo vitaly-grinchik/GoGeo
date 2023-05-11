@@ -38,6 +38,10 @@ struct CountryBrief: Decodable {
 // GET Country Details request using country ID
 struct CountryWithId: Decodable {
     let data: CountryDetails
+    
+    init(data: [String: Any]) {
+        self.data = CountryDetails(data: data)
+    }
 }
 
 // CountryDetails: Full country details

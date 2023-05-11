@@ -54,24 +54,53 @@ class NetworkManager {
     
     private init() {}
     
-    func fetchImageData(from url: String, completion: @escaping (Result<Data, NetError>) -> Void) {
-        guard let url = URL(string: url) else {
-            completion(.failure(.invalidUrl))
-            return
-        }
-        
-        DispatchQueue.global().async {
-            guard let imageData = try? Data(contentsOf: url) else {
-                completion(.failure(.noImageData))
-                return
-            }
-            DispatchQueue.main.async {
-                completion(.success(imageData))
-            }
-        }
-    }
+    // Apple networking
+//    func fetchImageData(from url: String, completion: @escaping (Result<Data, NetError>) -> Void) {
+//        guard let url = URL(string: url) else {
+//            completion(.failure(.invalidUrl))
+//            return
+//        }
+//
+//        DispatchQueue.global().async {
+//            guard let imageData = try? Data(contentsOf: url) else {
+//                completion(.failure(.noImageData))
+//                return
+//            }
+//            DispatchQueue.main.async {
+//                completion(.success(imageData))
+//            }
+//        }
+//    }
+//
+//    func fetchData<T: Decodable>(_ type: T.Type, using request: URLRequest, completion: @escaping (Result<T, NetError>) -> Void) {
+//        URLSession.shared.dataTask(with: request) { data, response, error in
+//            if let _ = error {
+//                if let serverResponse = response as? HTTPURLResponse {
+//                    let code = serverResponse.statusCode
+//                    print(NetError.requestFailed.rawValue)
+//                    print(HTTPURLResponse.localizedString(forStatusCode: code))
+//                }
+//                completion(.failure(.requestFailed))
+//                return
+//            }
+//
+//            guard let data = data else {
+//                completion(.failure(.invalidData))
+//                return
+//            }
+//
+//            if let data = try? JSONDecoder().decode(type, from: data) {
+//                DispatchQueue.main.async {
+//                    completion(.success(data))
+//                }
+//            } else {
+//                completion(.failure(.decodeError))
+//            }
+//        }.resume()
+//    }
     
-    func fetchAFData(from url: String, completion: @escaping (Result<Data, AFError>) -> Void) {
+    // Alamofire networking
+    func fetchAFImageData(from url: String, completion: @escaping (Result<Data, AFError>) -> Void) {
         AF.request(url)
             .validate()
             .responseData { response in
@@ -82,76 +111,10 @@ class NetworkManager {
             }
     }
     
-    func fetchData<T: Decodable>(_ type: T.Type, using request: URLRequest, completion: @escaping (Result<T, NetError>) -> Void) {
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            if let _ = error {
-                if let serverResponse = response as? HTTPURLResponse {
-                    let code = serverResponse.statusCode
-                    print(NetError.requestFailed.rawValue)
-                    print(HTTPURLResponse.localizedString(forStatusCode: code))
-                }
-                completion(.failure(.requestFailed))
-                return
-            }
-            
-            guard let data = data else {
-                print(NetError.invalidData.rawValue)
-                completion(.failure(.invalidData))
-                return
-            }
-            
-            if let data = try? JSONDecoder().decode(type, from: data) {
-                DispatchQueue.main.async {
-                    completion(.success(data))
-                }
-            } else {
-                completion(.failure(.decodeError))
-            }
-        }.resume()
-    }
-    
-    func searchCountries(using request: URLRequest, compleation: @escaping (Result<CountrySearch, NetError>) -> Void) {
-        
-        // Key name for data in Model
-        let dataKey = "data"
-        
-        AF.request(request)
-            .validate()
-            .responseJSON { response in
-                switch response.result {
-                case .success(let responseData):
-                    // Check for global JSON complatability
-                    guard let jsonData = responseData as? [String: Any] else {
-                        compleation(.failure(.jsonIncompatible))
-                        return
-                    }
-                    // Check for presence of needed key in JSON response
-                    guard jsonData.keys.contains(dataKey) else {
-                        compleation(.failure(.invalidData))
-                        return
-                    }
-                    
-                    // Check if data is compatible with the CountrySearch model
-                    guard let data = jsonData[dataKey] as? [[String: Any]] else {
-                        compleation(.failure(.invalidData))
-                        return
-                    }
-                    
-                    // Parse values
-                    let countrySearch = CountrySearch(data: data)
-                    compleation(.success(countrySearch))
-                    return
-                    
-                case .failure(_):
-                    print(NetError.invalidData.rawValue)
-                    compleation(.failure(.invalidData))
-                }
-            }
-    }
-
-    func fetchData<T: Decodable>(for model: DataModel,
-                                 using request: URLRequest,
-                                 compleation: @escaping (Result<T, NetError>) -> Void) {
+    func fetchAFData<T>(for type: T.Type,
+                      using request: URLRequest,
+                      compleation: @escaping (Result<T, NetError>) -> Void)
+    {
         // Key name for data in Model
         let dataKey = "data"
         
@@ -170,9 +133,8 @@ class NetworkManager {
                         compleation(.failure(.invalidData))
                         return
                     }
-                    
-                    switch model {
-                    case .countrySearch:
+                     
+                    if type == CountrySearch.self {
                         // Check if data conforms to CountrySearch model
                         guard let data = jsonData[dataKey] as? [[String: Any]] else {
                             compleation(.failure(.invalidData))
@@ -184,27 +146,67 @@ class NetworkManager {
                             return
                         }
                         compleation(.success(countrySearch))
-                        return
                         
-                    case .countryDetails:
+                    } else if type == CountryWithId.self {
                         // Check if data conforms to CountryDetails model
                         guard let data = jsonData[dataKey] as? [String: Any] else {
                             compleation(.failure(.invalidData))
                             return
                         }
                         // Parse values
-                        guard let countryDetails = CountryDetails(data: data) as? T else {
+                        guard let countryDetails = CountryWithId(data: data) as? T else {
                             compleation(.failure(.decodeError))
                             return
                         }
                         compleation(.success(countryDetails))
+                        
+                    } else {
+                        compleation(.failure(.invalidData))
                         return
                     }
-                    
-                case .failure(_):
-                    print(NetError.invalidData.rawValue)
-                    compleation(.failure(.invalidData))
+
+                case .failure(_): compleation(.failure(.invalidData))
                 }
             }
     }
+    
+//    func searchCountries(using request: URLRequest, compleation: @escaping (Result<CountrySearch, NetError>) -> Void) {
+//        
+//        // Key name for data in Model
+//        let dataKey = "data"
+//        
+//        AF.request(request)
+//            .validate()
+//            .responseJSON { response in
+//                switch response.result {
+//                case .success(let responseData):
+//                    // Check for global JSON complatability
+//                    guard let jsonData = responseData as? [String: Any] else {
+//                        compleation(.failure(.jsonIncompatible))
+//                        return
+//                    }
+//                    // Check for presence of needed key in JSON response
+//                    guard jsonData.keys.contains(dataKey) else {
+//                        compleation(.failure(.invalidData))
+//                        return
+//                    }
+//                    
+//                    // Check if data is compatible with the CountrySearch model
+//                    guard let data = jsonData[dataKey] as? [[String: Any]] else {
+//                        compleation(.failure(.invalidData))
+//                        return
+//                    }
+//                    
+//                    // Parse values
+//                    let countrySearch = CountrySearch(data: data)
+//                    compleation(.success(countrySearch))
+//                    return
+//                    
+//                case .failure(_):
+//                    print(NetError.invalidData.rawValue)
+//                    compleation(.failure(.invalidData))
+//                }
+//            }
+//    }
+
 }
