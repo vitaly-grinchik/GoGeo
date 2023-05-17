@@ -6,21 +6,6 @@
 //
 
 // Minimal country info
-struct CountrySearch: Decodable {
-    let data: [CountryBrief]
-    
-    init(data: [[String: Any]]) {
-        var countries = [CountryBrief]()
-        
-        data.forEach { data in
-            let country = CountryBrief(data: data)
-            countries.append(country)
-        }
-        
-        self.data = countries
-    }
-}
-
 struct CountryBrief: Decodable {
     let code: String
     let currencyCodes: [String]
@@ -29,18 +14,19 @@ struct CountryBrief: Decodable {
     
     init(data: [String: Any]) {
         code = data["code"] as? String ?? "-"
-        currencyCodes = data["currencyCodes"] as? [String] ?? ["-"]
+        currencyCodes = data["currencyCodes"] as? [String] ?? []
         name = data["name"] as? String ?? "-"
         wikiDataId = data["wikiDataId"] as? String ?? "-"
     }
-}
-
-// GET Country Details request using country ID
-struct CountryWithId: Decodable {
-    let data: CountryDetails
     
-    init(data: [String: Any]) {
-        self.data = CountryDetails(data: data)
+    static func getCountries(from data: Any) -> [CountryBrief] {
+        // Check if data is JSON format compatible
+        guard let jsonData = data as? [String: Any] else { return [] }
+        // Check if JSON data has got data for key "data"
+        guard let countries = jsonData["data"] as? [[String: Any]] else { return [] }
+        
+        // [String: Any] -> [CountryBrief]
+        return countries.compactMap { CountryBrief(data: $0) }
     }
 }
 
@@ -65,5 +51,11 @@ struct CountryDetails: Decodable {
         numRegions = data["numRegions"] as? Int ?? 0
         wikiDataId = data["wikiDataId"] as? String ?? "-"
     }
+    
+    static func getCountryDetails(from data: Any) -> CountryDetails? {
+        guard let data = data as? [String: Any] else { return nil }
+        guard let country = data["data"] as? [String: Any] else { return nil }
+        
+        return CountryDetails(data: country)
+    }
 }
-

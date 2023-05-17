@@ -97,7 +97,7 @@ final class CountryDetailsViewController: UIViewController {
     private func downloadFlagImage(completion: @escaping (Result<UIImage, NetError>) -> Void) {
         guard let flagImageUrl = countryDetails?.flagImageUri else { return }
         
-        NetworkManager.shared.fetchAFData(from: flagImageUrl) { data in
+        NetworkManager.shared.fetchAFData(using: flagImageUrl) { data in
             switch data {
             case .success(let imageData):
                 // Check if image is .svg
@@ -133,13 +133,17 @@ final class CountryDetailsViewController: UIViewController {
         var request = URLRequest(url: url)
         request.allHTTPHeaderFields = NetworkManager.shared.rapidHeaders
         
-        NetworkManager.shared.fetchAFData(for: CountrySearch.self, using: request) { result in
+        NetworkManager.shared.fetchAFData(using: request) { result in
             switch result {
-            case .success(let country):
-                let id = country.data.first?.wikiDataId ?? ""
+            case .success(let data):
+                guard let country = CountryBrief.getCountries(from: data).first else {
+                    print(NetError.jsonIncompleteData)
+                    return
+                }
+                let id = country.wikiDataId
                 completion(id)
-            case .failure(let error):
-                print("Country ID not found\n\(error.rawValue)")
+            case .failure(_):
+                print("Country ID not found")
             }
         }
     }
@@ -160,12 +164,15 @@ final class CountryDetailsViewController: UIViewController {
         var request = URLRequest(url: url)
         request.allHTTPHeaderFields = NetworkManager.shared.rapidHeaders
         
-//        NetworkManager.shared.fetchData(CountryWithId.self, using: request) { result in
-        NetworkManager.shared.fetchAFData(for: CountryWithId.self, using: request) { result in
+        NetworkManager.shared.fetchAFData(using: request) { result in
             switch result {
-            case .success(let country): completion(country.data)
-            case .failure(let error):
-                print("Info on country with ID: \(countryId) not found\n\(error.rawValue)")
+                
+            case .success(let data):
+                if let info = CountryDetails.getCountryDetails(from: data) {
+                    completion(info)
+                }
+            case .failure(_):
+                print("Info on country with ID: \(countryId) not found\n\(NetError.invalidData.rawValue)")
             }
         }
     }
