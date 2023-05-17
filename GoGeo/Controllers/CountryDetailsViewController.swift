@@ -63,7 +63,6 @@ final class CountryDetailsViewController: UIViewController {
                         case .failure(let error): print(error.rawValue)
                         }
                         self?.updateUI()
-                        self?.updateLabels()
                     }
                 }
             }
