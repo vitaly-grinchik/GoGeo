@@ -29,14 +29,14 @@ enum RapidApi: String {
     case city = "/v1/geo/cities"
 }
 
-enum NetError: String, Error {
-    case invalidData = "Invalid data"
+enum FetchError: String, Error {
     case invalidUrl = "Invalid URL"
     case requestFailed = "Request failed"
-    case decodeError = "JSON decoding error"
-    case noImageData = "No umage data found"
+    case decodingError = "JSON decoding error"
     case jsonIncompatible = "JSON incompatibility error"
     case jsonIncompleteData = "JSON has incomplete data"
+    case invalidData = "Invalid data"
+    case invalidImageData = "No umage data found"
 }
 
 class NetworkManager {
@@ -96,17 +96,17 @@ class NetworkManager {
 //    }
     
 // MARK: - Apple networking: Async/Await approach
-    func fetchImageData(from url: String) async -> Result<Data, NetError> {
+    func fetchImageData(from url: String) async -> Result<Data, FetchError> {
         guard let url = URL(string: url) else {
             return .failure(.invalidUrl)
         }
         guard let imageData = try? Data(contentsOf: url) else {
-            return .failure(.invalidData)
+            return .failure(.invalidImageData)
         }
         return .success(imageData)
     }
     
-    func fetchData<T: Decodable>(_ type: T.Type, using request: URLRequest) async -> Result<T, NetError> {
+    func fetchData<T: Decodable>(_ type: T.Type, using request: URLRequest) async -> Result<T, FetchError> {
         guard let url = request.url else {
             return .failure(.invalidUrl)
         }
@@ -116,7 +116,7 @@ class NetworkManager {
         }
         
         guard let decodedData = try? JSONDecoder().decode(type, from: data) else {
-            return .failure(.decodeError)
+            return .failure(.decodingError)
         }
         
         return .success(decodedData)

@@ -96,7 +96,7 @@ final class CountryDetailsViewController: UIViewController {
         currencyLabel.text = countryDetails?.currencyCodes.joined(separator: ", ")
     }
     
-    private func downloadFlagImage(completion: @escaping (Result<UIImage, NetError>) -> Void) {
+    private func downloadFlagImage(completion: @escaping (Result<UIImage, FetchError>) -> Void) {
         guard let flagImageUrl = countryDetails?.flagImageUri else { return }
         
         NetworkManager.shared.fetchAFData(using: flagImageUrl) { data in
@@ -129,7 +129,7 @@ final class CountryDetailsViewController: UIViewController {
             query: query
         ).url else {
             print("Wrong URL")
-            throw NetError.invalidUrl
+            throw FetchError.invalidUrl
         }
         
         var request = URLRequest(url: url)
@@ -142,7 +142,7 @@ final class CountryDetailsViewController: UIViewController {
             )
             return country.wikiDataId
         } catch {
-            throw NetError.requestFailed
+            throw FetchError.requestFailed
         }
     }
     
@@ -155,8 +155,8 @@ final class CountryDetailsViewController: UIViewController {
         ).url?.appending(component: countryId)
         
         else {
-            print(NetError.invalidUrl.rawValue)
-            throw NetError.invalidUrl
+            print(FetchError.invalidUrl.rawValue)
+            throw FetchError.invalidUrl
         }
         
         var request = URLRequest(url: url)
@@ -169,7 +169,7 @@ final class CountryDetailsViewController: UIViewController {
             )
             return countryDetails
         } catch {
-            throw NetError.requestFailed
+            throw FetchError.requestFailed
         }
     }
     
