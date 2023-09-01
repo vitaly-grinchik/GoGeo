@@ -96,30 +96,30 @@ class NetworkManager {
 //    }
     
 // MARK: - Apple networking: Async/Await approach
-    func fetchImageData(from url: String) async -> Result<Data, FetchError> {
+    func fetchImageData(from url: String) async throws -> Data {
         guard let url = URL(string: url) else {
-            return .failure(.invalidUrl)
+            throw FetchError.invalidUrl
         }
         guard let imageData = try? Data(contentsOf: url) else {
-            return .failure(.invalidImageData)
+            throw FetchError.invalidImageData
         }
-        return .success(imageData)
+        return imageData
     }
     
-    func fetchData<T: Decodable>(_ type: T.Type, using request: URLRequest) async -> Result<T, FetchError> {
+    func fetchData<T: Decodable>(_ type: T.Type, using request: URLRequest) async throws -> T {
         guard let url = request.url else {
-            return .failure(.invalidUrl)
+            throw FetchError.invalidUrl
         }
         
         guard let (data, _) = try? await URLSession.shared.data(from: url) else {
-            return .failure(.invalidData)
+            throw FetchError.invalidData
         }
         
         guard let decodedData = try? JSONDecoder().decode(type, from: data) else {
-            return .failure(.decodingError)
+            throw FetchError.decodingError
         }
         
-        return .success(decodedData)
+        return decodedData
     }
     
 // MARK: - Alamofire networking

@@ -119,7 +119,7 @@ final class CountryDetailsViewController: UIViewController {
         }
     }
     
-    private func fetchIdForCountry(_ name: String) async throws -> String {
+    private func fetchIdForCountry(_ name: String) async -> Result<String, FetchError>{
         
         let query = [URLQueryItem(name: "namePrefix", value: name)]
         
@@ -128,22 +128,13 @@ final class CountryDetailsViewController: UIViewController {
             endpoint: RapidApi.country.rawValue,
             query: query
         ).url else {
-            print("Wrong URL")
-            throw FetchError.invalidUrl
+            return .failure(.invalidUrl)
         }
         
         var request = URLRequest(url: url)
         request.allHTTPHeaderFields = NetworkManager.shared.rapidHeaders
         
-        do {
-            let country = try await NetworkManager.shared.fetchData(
-                CountryBrief.self,
-                using: request
-            )
-            return country.wikiDataId
-        } catch {
-            throw FetchError.requestFailed
-        }
+        
     }
     
     private func getInfoOnCountryWithId(_ countryId: String) async throws -> CountryDetails {
