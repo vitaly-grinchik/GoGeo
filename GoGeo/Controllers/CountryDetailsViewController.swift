@@ -119,7 +119,7 @@ final class CountryDetailsViewController: UIViewController {
         }
     }
     
-    private func getIdForCountry(_ name: String, completion: @escaping (String) -> Void) {
+    private func fetchIdForCountry(_ name: String) async throws -> String {
         
         let query = [URLQueryItem(name: "namePrefix", value: name)]
         
@@ -129,28 +129,24 @@ final class CountryDetailsViewController: UIViewController {
             query: query
         ).url else {
             print("Wrong URL")
-            return
+            throw NetError.invalidUrl
         }
         
         var request = URLRequest(url: url)
         request.allHTTPHeaderFields = NetworkManager.shared.rapidHeaders
         
-        NetworkManager.shared.fetchAFData(using: request) { result in
-            switch result {
-            case .success(let data):
-                guard let country = CountryBrief.getCountries(from: data).first else {
-                    print(NetError.jsonIncompleteData)
-                    return
-                }
-                let id = country.wikiDataId
-                completion(id)
-            case .failure(_):
-                print("Country ID not found")
-            }
+        do {
+            let country = try await NetworkManager.shared.fetchData(
+                CountryBrief.self,
+                using: request
+            )
+            return country.wikiDataId
+        } catch {
+            throw NetError.requestFailed
         }
     }
     
-    private func getInfoOnCountryWithId(_ countryId: String, completion: @escaping (CountryDetails) -> Void) {
+    private func getInfoOnCountryWithId(_ countryId: String) async throws -> CountryDetails {
         
         guard let url = Resource(
             host: RapidApi.host.rawValue,
@@ -160,22 +156,20 @@ final class CountryDetailsViewController: UIViewController {
         
         else {
             print(NetError.invalidUrl.rawValue)
-            return
+            throw NetError.invalidUrl
         }
         
         var request = URLRequest(url: url)
         request.allHTTPHeaderFields = NetworkManager.shared.rapidHeaders
         
-        NetworkManager.shared.fetchAFData(using: request) { result in
-            switch result {
-                
-            case .success(let data):
-                if let info = CountryDetails.getCountryDetails(from: data) {
-                    completion(info)
-                }
-            case .failure(_):
-                print("Info on country with ID: \(countryId) not found\n\(NetError.invalidData.rawValue)")
-            }
+        do {
+            let countryDetails = try await NetworkManager.shared.fetchData(
+                CountryDetails.self,
+                using: request
+            )
+            return countryDetails
+        } catch {
+            throw NetError.requestFailed
         }
     }
     

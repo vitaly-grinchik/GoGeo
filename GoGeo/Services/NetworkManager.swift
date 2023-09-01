@@ -50,8 +50,7 @@ class NetworkManager {
     
     private init() {}
     
-// MARK: - Apple networking
-// @Escaping approach
+// MARK: - Apple networking: @Escaping approach
 //    func fetchImageData(from url: String, completion: @escaping (Result<Data, NetError>) -> Void) {
 //        guard let url = URL(string: url) else {
 //            completion(.failure(.invalidUrl))
@@ -96,53 +95,55 @@ class NetworkManager {
 //        }.resume()
 //    }
     
-// Async/Await approach
+// MARK: - Apple networking: Async/Await approach
     func fetchImageData(from url: String) async -> Result<Data, NetError> {
         guard let url = URL(string: url) else {
             return .failure(.invalidUrl)
         }
         guard let imageData = try? Data(contentsOf: url) else {
-            return .failure(.noImageData)
+            return .failure(.invalidData)
         }
         return .success(imageData)
     }
     
-    func fetchData<T: Decodable>(_ type: T.Type, using request: URLRequest) async throws -> T {
+    func fetchData<T: Decodable>(_ type: T.Type, using request: URLRequest) async -> Result<T, NetError> {
         guard let url = request.url else {
-            throw NetError.invalidUrl
+            return .failure(.invalidUrl)
         }
         
-        let (data, _) = try await URLSession.shared.data(from: url)
+        guard let (data, _) = try? await URLSession.shared.data(from: url) else {
+            return .failure(.invalidData)
+        }
         
         guard let decodedData = try? JSONDecoder().decode(type, from: data) else {
-            throw NetError.invalidData
+            return .failure(.decodeError)
         }
         
-        return decodedData
+        return .success(decodedData)
     }
     
 // MARK: - Alamofire networking
-    func fetchAFData(using url: String, completion: @escaping (Result<Data, AFError>) -> Void) {
-        AF.request(url)
-            .validate()
-            .responseData { response in
-                switch response.result {
-                case .success(let data): completion(.success(data))
-                case .failure(let error): completion(.failure(error))
-                }
-            }
-    }
-    
-    func fetchAFData(using request: URLRequest, completion: @escaping (Result<Any, AFError>) -> Void)
-    {
-        AF.request(request)
-            .validate()
-            .responseJSON { response in
-                switch response.result {
-                case .success(let data): completion(.success(data))
-                case .failure(let error): completion(.failure(error))
-                }
-            }
-    }
+//    func fetchAFData(using url: String, completion: @escaping (Result<Data, AFError>) -> Void) {
+//        AF.request(url)
+//            .validate()
+//            .responseData { response in
+//                switch response.result {
+//                case .success(let data): completion(.success(data))
+//                case .failure(let error): completion(.failure(error))
+//                }
+//            }
+//    }
+//
+//    func fetchAFData(using request: URLRequest, completion: @escaping (Result<Any, AFError>) -> Void)
+//    {
+//        AF.request(request)
+//            .validate()
+//            .responseJSON { response in
+//                switch response.result {
+//                case .success(let data): completion(.success(data))
+//                case .failure(let error): completion(.failure(error))
+//                }
+//            }
+//    }
 
 }
