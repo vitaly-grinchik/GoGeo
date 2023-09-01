@@ -52,6 +52,8 @@ final class CountryDetailsViewController: UIViewController {
         //  Delay for 1.3 sec to observe API free use terms (request per second or rarely)
         //  Second request: get detailed info on country using its ID
         //  Third request: get country flag image data
+        
+        
         getIdForCountry(countryName) { [weak self] id in
             Timer.scheduledTimer(withTimeInterval: 1.3, repeats: false) { _ in
                 self?.getInfoOnCountryWithId(id) { country in

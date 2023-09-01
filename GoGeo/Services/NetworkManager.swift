@@ -50,7 +50,8 @@ class NetworkManager {
     
     private init() {}
     
-    // Apple networking
+// MARK: - Apple networking
+// @Escaping approach
 //    func fetchImageData(from url: String, completion: @escaping (Result<Data, NetError>) -> Void) {
 //        guard let url = URL(string: url) else {
 //            completion(.failure(.invalidUrl))
@@ -95,7 +96,32 @@ class NetworkManager {
 //        }.resume()
 //    }
     
-    // Alamofire networking
+// Async/Await approach
+    func fetchImageData(from url: String) async -> Result<Data, NetError> {
+        guard let url = URL(string: url) else {
+            return .failure(.invalidUrl)
+        }
+        guard let imageData = try? Data(contentsOf: url) else {
+            return .failure(.noImageData)
+        }
+        return .success(imageData)
+    }
+    
+    func fetchData<T: Decodable>(_ type: T.Type, using request: URLRequest) async throws -> T {
+        guard let url = request.url else {
+            throw NetError.invalidUrl
+        }
+        
+        let (data, _) = try await URLSession.shared.data(from: url)
+        
+        guard let decodedData = try? JSONDecoder().decode(type, from: data) else {
+            throw NetError.invalidData
+        }
+        
+        return decodedData
+    }
+    
+// MARK: - Alamofire networking
     func fetchAFData(using url: String, completion: @escaping (Result<Data, AFError>) -> Void) {
         AF.request(url)
             .validate()
