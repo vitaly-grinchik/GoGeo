@@ -23,16 +23,12 @@ struct Resource {
     }
 }
 
-enum RapidApi: String {
-    case host = "https://wft-geo-db.p.rapidapi.com"
-    case country = "/v1/geo/countries"
-    case city = "/v1/geo/cities"
-}
-
 enum FetchError: String, Error {
+    case fetchError = "Fetch Error"
     case invalidUrl = "Invalid URL"
+    case invalidImageUrl = "Invalid image URL"
     case requestFailed = "Request failed"
-    case decodingError = "JSON decoding error"
+    case jsonDecodingError = "JSON decoding error"
     case jsonIncompatible = "JSON incompatibility error"
     case jsonIncompleteData = "JSON has incomplete data"
     case invalidData = "Invalid data"
@@ -42,15 +38,10 @@ enum FetchError: String, Error {
 class NetworkManager {
     static let shared = NetworkManager()
     
-    // RapidAPI Key
-    let rapidHeaders = [
-        "X-RapidAPI-Host": "wft-geo-db.p.rapidapi.com",
-        "X-RapidAPI-Key": "3d736771d3msh14a3562b22f1641p1af6f7jsn1b7fcb2fc09b"
-    ]
-    
     private init() {}
     
 // MARK: - Apple networking: @Escaping approach
+// CODE HAS NOT BEEN REFACTORED
 //    func fetchImageData(from url: String, completion: @escaping (Result<Data, NetError>) -> Void) {
 //        guard let url = URL(string: url) else {
 //            completion(.failure(.invalidUrl))
@@ -98,7 +89,7 @@ class NetworkManager {
 // MARK: - Apple networking: Async/Await approach
     func fetchImageData(from url: String) async throws -> Data {
         guard let url = URL(string: url) else {
-            throw FetchError.invalidUrl
+            throw FetchError.invalidImageUrl
         }
         guard let imageData = try? Data(contentsOf: url) else {
             throw FetchError.invalidImageData
@@ -116,13 +107,14 @@ class NetworkManager {
         }
         
         guard let decodedData = try? JSONDecoder().decode(type, from: data) else {
-            throw FetchError.decodingError
+            throw FetchError.jsonDecodingError
         }
         
         return decodedData
     }
     
 // MARK: - Alamofire networking
+// CODE HAS NOT BEEN REFACTORED
 //    func fetchAFData(using url: String, completion: @escaping (Result<Data, AFError>) -> Void) {
 //        AF.request(url)
 //            .validate()

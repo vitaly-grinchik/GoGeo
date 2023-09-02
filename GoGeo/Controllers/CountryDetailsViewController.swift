@@ -9,7 +9,7 @@ import UIKit
 import SwiftDraw // for SVG image files
 
 final class CountryDetailsViewController: UIViewController {
-
+    
     // MARK: - IB Outlets
     @IBOutlet var infoStackView: UIStackView!
     
@@ -25,6 +25,7 @@ final class CountryDetailsViewController: UIViewController {
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
     
     var countryName: String!
+    var countryBrief: CountryBrief?
     var countryDetails: CountryDetails?
     var flagImage: UIImage?
     
@@ -53,22 +54,6 @@ final class CountryDetailsViewController: UIViewController {
         //  Second request: get detailed info on country using its ID
         //  Third request: get country flag image data
         
-        
-        getIdForCountry(countryName) { [weak self] id in
-            Timer.scheduledTimer(withTimeInterval: 1.3, repeats: false) { _ in
-                self?.getInfoOnCountryWithId(id) { country in
-                    self?.countryDetails = country
-                    
-                    self?.downloadFlagImage() { result in
-                        switch result {
-                        case .success(let image): self?.flagImage = image
-                        case .failure(let error): print(error.rawValue)
-                        }
-                        self?.updateUI()
-                    }
-                }
-            }
-        }
     }
     
     private func updateUI() {
@@ -94,74 +79,6 @@ final class CountryDetailsViewController: UIViewController {
         }
         
         currencyLabel.text = countryDetails?.currencyCodes.joined(separator: ", ")
-    }
-    
-    private func downloadFlagImage(completion: @escaping (Result<UIImage, FetchError>) -> Void) {
-        guard let flagImageUrl = countryDetails?.flagImageUri else { return }
-        
-        NetworkManager.shared.fetchAFData(using: flagImageUrl) { data in
-            switch data {
-            case .success(let imageData):
-                // Check if image is .svg
-                if let flagImage = UIImage(svgData: imageData) {
-                    completion(.success(flagImage))
-                // Check if other image format
-                } else if let flagImage = UIImage(data: imageData) {
-                    completion(.success(flagImage))
-                } else {
-                    // .. or placeholder system image
-                    if let flagImage = UIImage(systemName: "image") {
-                        completion(.success(flagImage))
-                    }
-                }
-            case .failure(let error): print(error.localizedDescription)
-            }
-        }
-    }
-    
-    private func fetchIdForCountry(_ name: String) async -> Result<String, FetchError>{
-        
-        let query = [URLQueryItem(name: "namePrefix", value: name)]
-        
-        guard let url = Resource(
-            host: RapidApi.host.rawValue,
-            endpoint: RapidApi.country.rawValue,
-            query: query
-        ).url else {
-            return .failure(.invalidUrl)
-        }
-        
-        var request = URLRequest(url: url)
-        request.allHTTPHeaderFields = NetworkManager.shared.rapidHeaders
-        
-        
-    }
-    
-    private func getInfoOnCountryWithId(_ countryId: String) async throws -> CountryDetails {
-        
-        guard let url = Resource(
-            host: RapidApi.host.rawValue,
-            endpoint: RapidApi.country.rawValue,
-            query: nil
-        ).url?.appending(component: countryId)
-        
-        else {
-            print(FetchError.invalidUrl.rawValue)
-            throw FetchError.invalidUrl
-        }
-        
-        var request = URLRequest(url: url)
-        request.allHTTPHeaderFields = NetworkManager.shared.rapidHeaders
-        
-        do {
-            let countryDetails = try await NetworkManager.shared.fetchData(
-                CountryDetails.self,
-                using: request
-            )
-            return countryDetails
-        } catch {
-            throw FetchError.requestFailed
-        }
     }
     
 }
