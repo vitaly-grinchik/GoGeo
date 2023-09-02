@@ -67,12 +67,11 @@ class NetworkManager {
 //    }
     
     func createUrl(host: String, path: String, query: [URLQueryItem]? = nil) -> URL? {
-        var components = URLComponents()
-        components.host = host
-        components.path = path
-        components.queryItems = query
+        var components = URLComponents(string: host)
+        components?.path = path
+        components?.queryItems = query
         
-        return components.url
+        return components?.url
     }
     
 // MARK: - Apple networking: Async/Await approach

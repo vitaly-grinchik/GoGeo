@@ -63,7 +63,7 @@ extension MainViewController {
     private func presentCountryDetailsOn(_ country: String) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         guard let detailsVC = storyboard.instantiateViewController(withIdentifier: "DetailsVC") as? CountryDetailsViewController else { return }
-        detailsVC.countryName = country
+        detailsVC.country = country
         navigationController?.pushViewController(detailsVC, animated: true)
     }
     

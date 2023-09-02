@@ -24,7 +24,9 @@ final class CountryDetailsViewController: UIViewController {
     
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
     
-    var countryName: String!
+    private let apiManager = RapidManager.shared
+    
+    var country: String!
     var countryBrief: CountryBrief?
     var countryDetails: CountryDetails?
     var flagImage: UIImage?
@@ -32,13 +34,15 @@ final class CountryDetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        countryNameLabel.text = countryName
+        countryNameLabel.text = country
         
         flagImageView.alpha = 0
         infoStackView.alpha = 0
         
         activityIndicator.hidesWhenStopped = true
         activityIndicator.startAnimating()
+        
+        getInfoOnCountry()
     }
     
     override func viewWillLayoutSubviews() {
@@ -53,6 +57,7 @@ final class CountryDetailsViewController: UIViewController {
         //  Delay for 1.3 sec to observe API free use terms (request per second or rarely)
         //  Second request: get detailed info on country using its ID
         //  Third request: get country flag image data
+        
         
     }
     
@@ -79,6 +84,26 @@ final class CountryDetailsViewController: UIViewController {
         }
         
         currencyLabel.text = countryDetails?.currencyCodes.joined(separator: ", ")
+    }
+    
+    private func getInfoOnCountry() {
+        Task {
+            do {
+                countryBrief = try await apiManager.fetchBriefInfoOnCountry(country)
+                print(countryBrief?.name ?? "no name")
+                print(countryBrief?.code ?? "no code")
+                print(countryBrief?.wikiDataId ?? "no ID")
+                updateUI()
+            } catch APIError.jsonIncompleteData {
+                print(APIError.jsonIncompleteData.rawValue)
+
+            } catch APIError.invalidAPIUrl {
+                print(APIError.invalidAPIUrl.rawValue)
+
+            } catch NetworkError.invalidUrl {
+                print(NetworkError.invalidUrl.rawValue)
+            }
+        }
     }
     
 }

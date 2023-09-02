@@ -40,7 +40,7 @@ final class RapidManager {
     private init() {}
     
     // MARK: - Private methods
-    private func fetchBriefInfoOnCountry(_ name: String) async throws -> CountryBrief? {
+    func fetchBriefInfoOnCountry(_ name: String) async throws -> CountryBrief? {
         
         let countryBrief: CountryBrief?
         
@@ -60,11 +60,11 @@ final class RapidManager {
         request.allHTTPHeaderFields = headers
         
         countryBrief = try await networkManager.fetchData(CountryBrief.self, using: request)
-        
+        print(countryBrief?.name ?? "NO DATA")
         return countryBrief
     }
     
-    private func fetchDetailsInfoOnCountry() async throws -> CountryDetails? {
+    func fetchDetailsInfoOnCountry() async throws -> CountryDetails? {
         
         guard let id = countryBrief?.wikiDataId else { throw APIError.jsonIncompleteData }
         
@@ -79,17 +79,17 @@ final class RapidManager {
         var request = URLRequest(url: url)
         request.allHTTPHeaderFields = headers
         
-        countryDetails = try await NetworkManager.shared.fetchData(CountryDetails.self, using: request)
+        countryDetails = try await networkManager.fetchData(CountryDetails.self, using: request)
         
         return countryDetails
     }
     
-    private func fetchFlagImageData(forCountryId id: String) async throws -> Data? {
+    func fetchFlagImageData(forCountryId id: String) async throws -> Data? {
         guard let flagImageUrl = countryDetails?.flagImageUri else {
             throw NetworkError.invalidImageUrl
         }
         
-        guard let imageData = try? await NetworkManager.shared.fetchImageData(from: flagImageUrl) else {
+        guard let imageData = try? await networkManager.fetchImageData(from: flagImageUrl) else {
             throw NetworkError.invalidImageData
         }
         
