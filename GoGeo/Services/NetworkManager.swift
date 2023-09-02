@@ -8,21 +8,6 @@
 import Foundation
 import Alamofire
 
-struct Resource {
-    let host: String
-    let endpoint: String
-    let query: [URLQueryItem]?
-    
-    var url: URL? {
-        if var components = URLComponents(string: host) {
-            components.path = endpoint
-            components.queryItems = query
-            if let url = components.url { return url }
-        }
-        return nil
-    }
-}
-
 enum NetworkError: String, Error {
     case invalidUrl = "Invalid URL"
     case invalidImageUrl = "Invalid image URL"
@@ -80,6 +65,15 @@ class NetworkManager {
 //            }
 //        }.resume()
 //    }
+    
+    func createUrl(host: String, path: String, query: [URLQueryItem]? = nil) -> URL? {
+        var url = URLComponents()
+        url.host = host
+        url.path = path
+        url.queryItems = query
+        
+        return url.url
+    }
     
 // MARK: - Apple networking: Async/Await approach
     func fetchImageData(from url: String) async throws -> Data {

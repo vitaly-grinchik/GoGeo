@@ -7,17 +7,14 @@
 
 import Foundation
 
-enum APIError: Error {
-    case requestFailed = "Request failed"
+enum APIError: String, Error {
     case jsonDecodingError = "JSON decoding error"
     case jsonIncompatible = "JSON incompatibility error"
     case jsonIncompleteData = "JSON has incomplete data"
 }
 
 final class RapidManager {
-    
-    enum RapidApi: String {
-        case host = "https://wft-geo-db.p.rapidapi.com"
+    enum Endpoint: String {
         case country = "/v1/geo/countries"
         case city = "/v1/geo/cities"
     }
@@ -25,19 +22,24 @@ final class RapidManager {
     static let shared = RapidManager()
     
     // RapidAPI Key
-    static let rapidHeaders = [
+    private let rapidHeaders = [
         "X-RapidAPI-Host": "wft-geo-db.p.rapidapi.com",
         "X-RapidAPI-Key": "3d736771d3msh14a3562b22f1641p1af6f7jsn1b7fcb2fc09b"
     ]
     
+    private let host = "https://wft-geo-db.p.rapidapi.com"
+    
     private init() {}
     
     private func fetchBriefInfoOnCountry(_ name: String) async throws -> CountryBrief? {
+        
+        let countryBrief: CountryBrief?
+        
         let query = [URLQueryItem(name: "namePrefix", value: name)]
         
-        guard let url = Resource(
-            host: RapidApi.host.rawValue,
-            endpoint: RapidApi.country.rawValue,
+        guard let url = URLManager(
+            host: Endpoint.host.rawValue,
+            endpoint: Endpoint.country.rawValue,
             query: query
         ).url else {
             throw NetworkError.invalidUrl
@@ -59,9 +61,9 @@ final class RapidManager {
             throw NetworkError.fetchError
         }
         
-        guard let url = Resource(
-            host: RapidApi.host.rawValue,
-            endpoint: RapidApi.country.rawValue,
+        guard let url = URLManager(
+            host: Endpoint.host.rawValue,
+            endpoint: Endpoint.country.rawValue,
             query: nil
         ).url?.appending(component: countryId)
                 
