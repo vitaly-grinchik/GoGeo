@@ -67,16 +67,16 @@ class NetworkManager {
 //    }
     
     func createUrl(host: String, path: String, query: [URLQueryItem]? = nil) -> URL? {
-        var url = URLComponents()
-        url.host = host
-        url.path = path
-        url.queryItems = query
+        var components = URLComponents()
+        components.host = host
+        components.path = path
+        components.queryItems = query
         
-        return url.url
+        return components.url
     }
     
 // MARK: - Apple networking: Async/Await approach
-    func fetchImageData(from url: String) async throws -> Data {
+    func fetchImageData(from url: String) async throws -> Data? {
         guard let url = URL(string: url) else {
             throw NetworkError.invalidImageUrl
         }
@@ -86,7 +86,7 @@ class NetworkManager {
         return imageData
     }
     
-    func fetchData<T: Decodable>(_ type: T.Type, using request: URLRequest) async throws -> T {
+    func fetchData<T: Decodable>(_ type: T.Type, using request: URLRequest) async throws -> T? {
         guard let url = request.url else {
             throw NetworkError.invalidUrl
         }

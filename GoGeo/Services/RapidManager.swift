@@ -8,6 +8,7 @@
 import Foundation
 
 enum APIError: String, Error {
+    case invalidAPIUrl = "Invalid API Request URL"
     case jsonDecodingError = "JSON decoding error"
     case jsonIncompatible = "JSON incompatibility error"
     case jsonIncompleteData = "JSON has incomplete data"
@@ -19,71 +20,71 @@ final class RapidManager {
         case city = "/v1/geo/cities"
     }
 
+    // MARK: - Shared singlton property
     static let shared = RapidManager()
-    
     // RapidAPI Key
-    private let rapidHeaders = [
+    
+    // MARK: - Private properties
+    private let networkManager = NetworkManager.shared
+
+    private let host = "https://wft-geo-db.p.rapidapi.com"
+    private let headers = [
         "X-RapidAPI-Host": "wft-geo-db.p.rapidapi.com",
         "X-RapidAPI-Key": "3d736771d3msh14a3562b22f1641p1af6f7jsn1b7fcb2fc09b"
     ]
     
-    private let host = "https://wft-geo-db.p.rapidapi.com"
+    private var countryBrief: CountryBrief?
+    private var countryDetails: CountryDetails?
     
+    // MARK: - Init singleton
     private init() {}
     
+    // MARK: - Private methods
     private func fetchBriefInfoOnCountry(_ name: String) async throws -> CountryBrief? {
         
         let countryBrief: CountryBrief?
         
-        let query = [URLQueryItem(name: "namePrefix", value: name)]
+        let query = [
+            URLQueryItem(name: "namePrefix", value: name)
+        ]
         
-        guard let url = URLManager(
-            host: Endpoint.host.rawValue,
-            endpoint: Endpoint.country.rawValue,
+        guard let url = networkManager.createUrl(
+            host: host,
+            path: Endpoint.country.rawValue,
             query: query
-        ).url else {
-            throw NetworkError.invalidUrl
+        ) else {
+            throw APIError.invalidAPIUrl
         }
         
         var request = URLRequest(url: url)
-        request.allHTTPHeaderFields = NetworkManager.shared.rapidHeaders
+        request.allHTTPHeaderFields = headers
         
-        do {
-            countryBrief = try await NetworkManager.shared.fetchData(CountryBrief.self, using: request)
-            return countryBrief
-        } catch {
-            throw NetworkError.fetchError
-        }
+        countryBrief = try await networkManager.fetchData(CountryBrief.self, using: request)
+        
+        return countryBrief
     }
     
-    private func fetchDetailsInfoOnCountry() async throws {
-        guard let countryId = countryBrief?.wikiDataId else {
-            throw NetworkError.fetchError
-        }
+    private func fetchDetailsInfoOnCountry() async throws -> CountryDetails? {
         
-        guard let url = URLManager(
-            host: Endpoint.host.rawValue,
-            endpoint: Endpoint.country.rawValue,
-            query: nil
-        ).url?.appending(component: countryId)
-                
+        guard let id = countryBrief?.wikiDataId else { throw APIError.jsonIncompleteData }
+        
+        guard let url = networkManager.createUrl(
+            host: host,
+            path: Endpoint.country.rawValue
+        )?.appending(component: id)
         else {
-            print(NetworkError.invalidUrl.rawValue)
-            throw NetworkError.invalidUrl
+            throw APIError.invalidAPIUrl
         }
-        
+       
         var request = URLRequest(url: url)
-        request.allHTTPHeaderFields = NetworkManager.shared.rapidHeaders
+        request.allHTTPHeaderFields = headers
         
-        do {
-            countryDetails = try await NetworkManager.shared.fetchData(CountryDetails.self, using: request)
-        } catch {
-            throw NetworkError.fetchError
-        }
+        countryDetails = try await NetworkManager.shared.fetchData(CountryDetails.self, using: request)
         
+        return countryDetails
     }
     
-    private func fetchFlagImageData() async throws -> Data {
+    private func fetchFlagImageData(forCountryId id: String) async throws -> Data? {
         guard let flagImageUrl = countryDetails?.flagImageUri else {
             throw NetworkError.invalidImageUrl
         }
