@@ -85,16 +85,19 @@ class NetworkManager {
         return imageData
     }
     
-    func fetchData<T: Decodable>(_ type: T.Type, using request: URLRequest) async throws -> T? {
+    func fetchData<T: Decodable>(_ type: T.Type, using request: URLRequest) async throws -> T {
         guard let url = request.url else {
+            print(NetworkError.invalidUrl.rawValue)
             throw NetworkError.invalidUrl
         }
         
         guard let (data, _) = try? await URLSession.shared.data(from: url) else {
+            print(NetworkError.invalidData.rawValue)
             throw NetworkError.invalidData
         }
         
         guard let decodedData = try? JSONDecoder().decode(type, from: data) else {
+            print(APIError.jsonDecodingError.rawValue)
             throw APIError.jsonDecodingError
         }
         

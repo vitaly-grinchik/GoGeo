@@ -11,7 +11,7 @@ struct CountryResponse: Decodable {
 }
 
 struct CountryDetailsResponse: Decodable {
-    let data: [CountryDetails]
+    let data: CountryDetails
 }
 
 // Minimal country info
