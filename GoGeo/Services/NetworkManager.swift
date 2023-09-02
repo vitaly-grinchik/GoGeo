@@ -23,14 +23,9 @@ struct Resource {
     }
 }
 
-enum FetchError: String, Error {
-    case fetchError = "Fetch Error"
+enum NetworkError: String, Error {
     case invalidUrl = "Invalid URL"
     case invalidImageUrl = "Invalid image URL"
-    case requestFailed = "Request failed"
-    case jsonDecodingError = "JSON decoding error"
-    case jsonIncompatible = "JSON incompatibility error"
-    case jsonIncompleteData = "JSON has incomplete data"
     case invalidData = "Invalid data"
     case invalidImageData = "No umage data found"
 }
@@ -89,25 +84,25 @@ class NetworkManager {
 // MARK: - Apple networking: Async/Await approach
     func fetchImageData(from url: String) async throws -> Data {
         guard let url = URL(string: url) else {
-            throw FetchError.invalidImageUrl
+            throw NetworkError.invalidImageUrl
         }
         guard let imageData = try? Data(contentsOf: url) else {
-            throw FetchError.invalidImageData
+            throw NetworkError.invalidImageData
         }
         return imageData
     }
     
     func fetchData<T: Decodable>(_ type: T.Type, using request: URLRequest) async throws -> T {
         guard let url = request.url else {
-            throw FetchError.invalidUrl
+            throw NetworkError.invalidUrl
         }
         
         guard let (data, _) = try? await URLSession.shared.data(from: url) else {
-            throw FetchError.invalidData
+            throw NetworkError.invalidData
         }
         
         guard let decodedData = try? JSONDecoder().decode(type, from: data) else {
-            throw FetchError.jsonDecodingError
+            throw APIError.jsonDecodingError
         }
         
         return decodedData

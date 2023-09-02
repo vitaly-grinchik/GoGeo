@@ -8,7 +8,10 @@
 import Foundation
 
 enum APIError: Error {
-    
+    case requestFailed = "Request failed"
+    case jsonDecodingError = "JSON decoding error"
+    case jsonIncompatible = "JSON incompatibility error"
+    case jsonIncompleteData = "JSON has incomplete data"
 }
 
 final class RapidManager {
@@ -37,7 +40,7 @@ final class RapidManager {
             endpoint: RapidApi.country.rawValue,
             query: query
         ).url else {
-            throw FetchError.invalidUrl
+            throw NetworkError.invalidUrl
         }
         
         var request = URLRequest(url: url)
@@ -47,13 +50,13 @@ final class RapidManager {
             countryBrief = try await NetworkManager.shared.fetchData(CountryBrief.self, using: request)
             return countryBrief
         } catch {
-            throw FetchError.fetchError
+            throw NetworkError.fetchError
         }
     }
     
     private func fetchDetailsInfoOnCountry() async throws {
         guard let countryId = countryBrief?.wikiDataId else {
-            throw FetchError.fetchError
+            throw NetworkError.fetchError
         }
         
         guard let url = Resource(
@@ -63,8 +66,8 @@ final class RapidManager {
         ).url?.appending(component: countryId)
                 
         else {
-            print(FetchError.invalidUrl.rawValue)
-            throw FetchError.invalidUrl
+            print(NetworkError.invalidUrl.rawValue)
+            throw NetworkError.invalidUrl
         }
         
         var request = URLRequest(url: url)
@@ -73,18 +76,18 @@ final class RapidManager {
         do {
             countryDetails = try await NetworkManager.shared.fetchData(CountryDetails.self, using: request)
         } catch {
-            throw FetchError.fetchError
+            throw NetworkError.fetchError
         }
         
     }
     
     private func fetchFlagImageData() async throws -> Data {
         guard let flagImageUrl = countryDetails?.flagImageUri else {
-            throw FetchError.invalidImageUrl
+            throw NetworkError.invalidImageUrl
         }
         
         guard let imageData = try? await NetworkManager.shared.fetchImageData(from: flagImageUrl) else {
-            throw FetchError.invalidImageData
+            throw NetworkError.invalidImageData
         }
         
         return imageData
