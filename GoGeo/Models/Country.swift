@@ -6,11 +6,11 @@
 //
 
 
-struct CountryResponse: Decodable {
+struct CountrySearch: Decodable {
     let data: [CountryBrief]
 }
 
-struct CountryDetailsResponse: Decodable {
+struct CountryDetailsSearch: Decodable {
     let data: CountryDetails
 }
 
@@ -22,7 +22,7 @@ struct CountryBrief: Decodable {
     let wikiDataId: String
 }
 
-// CountryDetails: Full country details
+// Full country details
 struct CountryDetails: Decodable {
     let capital: String
     let code: String

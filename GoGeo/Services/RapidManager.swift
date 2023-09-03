@@ -58,8 +58,8 @@ final class RapidManager {
         
         var request = URLRequest(url: url)
         request.allHTTPHeaderFields = headers
-        print(url)
-        let countries = try await networkManager.fetchData(CountryResponse.self, using: request)
+        
+        let countries = try await networkManager.fetchData(CountrySearch.self, using: request)
         countryBrief = countries.data.first
         print(countryBrief?.name ?? "FETCH ERROR")
         
@@ -81,7 +81,7 @@ final class RapidManager {
         var request = URLRequest(url: url)
         request.allHTTPHeaderFields = headers
         
-        let countryDetailsResponse = try await networkManager.fetchData(CountryDetailsResponse.self, using: request)
+        let countryDetailsResponse = try await networkManager.fetchData(CountryDetailsSearch.self, using: request)
         countryDetails = countryDetailsResponse.data
         
         return countryDetails

@@ -91,10 +91,12 @@ class NetworkManager {
             throw NetworkError.invalidUrl
         }
         
-        guard let (data, _) = try? await URLSession.shared.data(from: url) else {
+        guard let (data, response) = try? await URLSession.shared.data(from: url) else {
             print(NetworkError.invalidData.rawValue)
             throw NetworkError.invalidData
         }
+        
+        print(response.debugDescription)
         
         guard let decodedData = try? JSONDecoder().decode(type, from: data) else {
             print(APIError.jsonDecodingError.rawValue)
