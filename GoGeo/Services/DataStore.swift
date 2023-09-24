@@ -210,36 +210,22 @@ final class DataStore {
         "Zimbabwe"
     ]
     
-    // Get groups of names with the same first letter in alphabetic order
-    func getGroups() -> [[String]] {
+    var countryGroups: [[String]] {
         var groups: [[String]] = []
-        var list = countries.sorted() // List to process
         
-        while !list.isEmpty {
-            if let firstLetter = list.first?.first {
-                let group = list.prefix { element in
-                    element.first?.lowercased() == firstLetter.lowercased()
-                }
-                groups += [Array(group)]
-                list.removeFirst(group.count)
-            } else {
-                list.removeFirst() // Ignore empty string
-            }
+        if !countries.isEmpty {
+            let tempDict = Dictionary(grouping: countries) { $0.first! }
+            tempDict.forEach { groups.append($0.value) }
         }
+        
         return groups
     }
     
-    // Get a list of first letters of all groups
-    func getTitles() -> [String] {
-        let groups = getGroups()
-        var titles = [String]()
-        groups.forEach { element in
-            if let firstLetter = element.first?.first {
-                titles.append(firstLetter.uppercased())
-            }
-        }
-        return titles
-    }
+//    var countryTitles: [String] {
+//        var titles = [String]()
+//        countryGroups.forEach { titles.append(String($0.key)) }
+//        return titles.sorted(by: <)
+//    }
     
     private init() {}
     
