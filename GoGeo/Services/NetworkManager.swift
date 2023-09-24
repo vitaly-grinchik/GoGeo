@@ -90,13 +90,13 @@ class NetworkManager {
             print(NetworkError.invalidUrl.rawValue)
             throw NetworkError.invalidUrl
         }
-        
+        // TODO: - Реализовать аутентификацию
         guard let (data, response) = try? await URLSession.shared.data(from: url) else {
             print(NetworkError.invalidData.rawValue)
             throw NetworkError.invalidData
         }
-        
-        print(response.debugDescription)
+        print(request.headers)
+        print(response.url ?? "")
         
         guard let decodedData = try? JSONDecoder().decode(type, from: data) else {
             print(APIError.jsonDecodingError.rawValue)
