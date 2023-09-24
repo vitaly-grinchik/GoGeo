@@ -13,9 +13,9 @@ final class MainViewController: UITableViewController {
     
     private var filteredCountries = [String]()
     
-    private let titles = DataStore.shared.getTitles()
+//    private let titles = DataStore.shared.getTitles()
     
-    private let groupsOfCountries = DataStore.shared.getGroups()
+    private let countryGroups = DataStore.shared.countryGroups
     
     private var isFiltering: Bool {
         searchController.searchBar.text != nil && searchController.searchBar.text != ""
@@ -73,20 +73,21 @@ extension MainViewController {
 extension MainViewController {
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        isFiltering ? 1 : titles.count
+        isFiltering ? 1 : countryGroups.count
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        isFiltering ? "Found: \(filteredCountries.count)" : titles[section]
+        let firstLetter = countryGroups[section].first?.first
+        return isFiltering ? "Found: \(filteredCountries.count)" : String(describing: firstLetter)
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        isFiltering ? filteredCountries.count : groupsOfCountries[section].count
+        isFiltering ? filteredCountries.count : countryGroups[section].count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        let country = isFiltering ? filteredCountries[indexPath.row] : groupsOfCountries[indexPath.section][indexPath.row]
+        let country = isFiltering ? filteredCountries[indexPath.row] : countryGroups[indexPath.section][indexPath.row]
         
         var cellContent = cell.defaultContentConfiguration()
         cellContent.text = country
@@ -100,7 +101,7 @@ extension MainViewController {
 // MARK: - UITableViewDelegate
 extension MainViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let country = isFiltering ? filteredCountries[indexPath.row] : groupsOfCountries[indexPath.section][indexPath.row]
+        let country = isFiltering ? filteredCountries[indexPath.row] : countryGroups[indexPath.section][indexPath.row]
         presentCountryDetailsOn(country)
         tableView.deselectRow(at: indexPath, animated: true)
     }

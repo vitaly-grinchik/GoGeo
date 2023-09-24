@@ -215,17 +215,12 @@ final class DataStore {
         
         if !countries.isEmpty {
             let tempDict = Dictionary(grouping: countries) { $0.first! }
-            tempDict.forEach { groups.append($0.value) }
+            let tempDictSorted = tempDict.sorted { $0.key < $1.key }
+            tempDictSorted.forEach { groups.append($0.value) }
         }
         
         return groups
     }
-    
-//    var countryTitles: [String] {
-//        var titles = [String]()
-//        countryGroups.forEach { titles.append(String($0.key)) }
-//        return titles.sorted(by: <)
-//    }
     
     private init() {}
     
