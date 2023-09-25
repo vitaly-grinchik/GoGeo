@@ -13,7 +13,9 @@ final class MainViewController: UITableViewController {
     
     private var filteredCountries = [String]()
     
-    private let countryGroups = DataStore.shared.countryGroups
+    private let countryGroups = DataStore.shared.groupLists
+    
+    private let countryTitles = DataStore.shared.groupTitles
     
     private var isFiltering: Bool {
         searchController.searchBar.text != nil && searchController.searchBar.text != ""
@@ -75,8 +77,7 @@ extension MainViewController {
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        guard let firstLetter = countryGroups[section].first?.first else { return "" }
-        return isFiltering ? "Found: \(filteredCountries.count)" : String(describing: firstLetter)
+        countryTitles[section]
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

@@ -210,16 +210,28 @@ final class DataStore {
         "Zimbabwe"
     ]
     
-    var countryGroups: [[String]] {
-        var groups: [[String]] = []
+    // Intermediate calculated property
+    private var countryGroups: [Dictionary<String, [String]>.Element] {
+        var groupDict = [Dictionary<String, [String]>.Element]()
         
         if !countries.isEmpty {
-            let tempDict = Dictionary(grouping: countries) { $0.first! }
+            // Arrange data in dictionary with a first letter as a key
+            let tempDict = Dictionary(grouping: countries.sorted()) { String($0.first!) }
             let tempDictSorted = tempDict.sorted { $0.key < $1.key }
-            tempDictSorted.forEach { groups.append($0.value) }
+            let groupDic = tempDictSorted.map { $0.value }
         }
         
-        return groups
+        return groupDict
+    }
+    
+    // Get array of first letters
+    var groupTitles: [String] {
+        countryGroups.map { $0.key }
+    }
+    
+    // Get arrays with countries with the same first letter
+    var groupLists: [[String]] {
+        countryGroups.map { $0.value }
     }
     
     private init() {}
