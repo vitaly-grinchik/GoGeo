@@ -52,12 +52,7 @@ final class CountryDetailsViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        // Chain of requests:
-        //  First request: get country ID for selected country
-        //  Delay for 1.3 sec to observe API free use terms (request per second or rarely)
-        //  Second request: get detailed info on country using its ID
-        //  Third request: get country flag image data
-        
+        // TODO: - Fetch data
         
     }
     

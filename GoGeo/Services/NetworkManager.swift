@@ -90,7 +90,8 @@ class NetworkManager {
             print(NetworkError.invalidUrl.rawValue)
             throw NetworkError.invalidUrl
         }
-        // TODO: - Реализовать аутентификацию
+        
+        // TODO: - Реализовать аутентификацию (через делагат?)
         guard let (data, response) = try? await URLSession.shared.data(from: url) else {
             print(NetworkError.invalidData.rawValue)
             throw NetworkError.invalidData
