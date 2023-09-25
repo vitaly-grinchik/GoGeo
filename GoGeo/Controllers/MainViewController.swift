@@ -13,9 +13,9 @@ final class MainViewController: UITableViewController {
     
     private var filteredCountries = [String]()
     
-    private let titles = DataStore.shared.getTitles()
+    private let titles = DataStore.shared.groupTitles
     
-    private let groupsOfCountries = DataStore.shared.getGroups()
+    private let groupsOfCountries = DataStore.shared.groupLists
     
     private var isFiltering: Bool {
         searchController.searchBar.text != nil && searchController.searchBar.text != ""
