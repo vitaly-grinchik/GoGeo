@@ -218,7 +218,7 @@ final class DataStore {
             // Arrange data in dictionary with a first letter as a key
             let tempDict = Dictionary(grouping: countries.sorted()) { String($0.first!) }
             let tempDictSorted = tempDict.sorted { $0.key < $1.key }
-            let groupDic = tempDictSorted.map { $0.value }
+            groupDict = tempDictSorted
         }
         
         return groupDict
